@@ -1,0 +1,44 @@
+name: Build and test C#
+
+on:
+  push:
+  pull_request:
+    branches: [master]
+
+env:
+  DOTNET_VERSION: "6.0.202"
+
+jobs:
+  list-projects:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v2
+      - id: set-matrix
+        run: echo "::set-output name=matrix::$(find . -name "*.csproj" | jq -R -s -c 'split("\n")[:-1]')"
+
+  build-and-test:
+    needs: list-projects
+    name: build-and-test-${{matrix.os}}-${{matrix.project}}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macOS-latest]
+        project: ${{ fromJson(needs.list-projects.outputs.matrix) }}
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Install dependencies
+        run: dotnet restore '${{ matrix.project }}'
+
+      - name: Build
+        run: dotnet build --configuration Release --no-restore '${{ matrix.project }}'
+
+      - name: Test
+        run: dotnet test --no-restore --verbosity normal '${{ matrix.project }}'
