@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="Task_1.ATS">
+    <Position X="0.5" Y="2" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAAIACAAACAAAAAgAAACAAAAAAAAAAAA=</HashCode>
+      <FileName>ATS.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="rates" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Task_1.RegularRate" BaseTypeListCollapsed="true">
+    <Position X="5.5" Y="4.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAQAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Rate.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Task_1.DiscountRate" BaseTypeListCollapsed="true">
+    <Position X="8.5" Y="4.5" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAQAAAAAAEAAAAAAAAAAAAAAAAgAAAAIAAAA=</HashCode>
+      <FileName>Rate.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="Task_1.IRate">
+    <Position X="5.5" Y="2" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Rate.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
