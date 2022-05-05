@@ -23,6 +23,11 @@
             Rates = Rates.Append(rate).ToArray();
         }
 
+        public void AddDiscountRate(IRate rate, double percent) {
+            IRate newRate = new DiscountRate(rate, percent);
+            Rates = Rates.Append(newRate).ToArray();
+        }
+
         public double AveragePrice() {
             double sum = 0;
             foreach (IRate rate in Rates) {

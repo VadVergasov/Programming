@@ -21,7 +21,7 @@ namespace Task_1.Tests {
             Assert.AreEqual(95, ats.AveragePrice());
             ats.AddDiscountRate(100, 100);
             Assert.AreEqual(190.0 / 3.0, ats.AveragePrice());
-            ats.AddRegularRate(-100);
+            ats.AddDiscountRate(new RegularRate(-100), 99);
             Assert.AreEqual(190.0 / 4.0, ats.AveragePrice());
         }
     }
