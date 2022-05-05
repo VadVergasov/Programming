@@ -29,7 +29,7 @@ namespace Task_1.Tests {
             shapes[3] = new Square(10);
 
             for (int i = 0; i < shapes.Length; i++) {
-                Assert.AreEqual(result[i], shapes[i].Area());
+                Assert.IsTrue(System.Math.Abs(shapes[i].Area() - result[i]) < 1e-9);
             }
         }
 
