@@ -51,7 +51,7 @@
             set {
                 if (value < 0 || value > 100) {
                     discount = 0;
-                }else {
+                } else {
                     discount = value;
                 }
             }

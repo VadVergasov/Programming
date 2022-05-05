@@ -16,8 +16,10 @@ namespace Task_3.Tests {
 
         [TestMethod()]
         public void GetDaysSpanTest() {
-            int[][] input = { new int[] { 12, 06, 2003 }, new int[] { 1, 1, 1}, new int[] { 1, 1, 2030} };
-            long[] results = { 6857, 738234, -2843 };
+            int[][] input = { new int[] { 12, 06, 2003 }, new int[] { 1, 1, 1 }, new int[] { 1, 1, 2030 } };
+            long[] results = { (System.DateTime.Now - new System.DateTime(input[0][2], input[0][1], input[0][0])).Days,
+                (System.DateTime.Now - new System.DateTime(input[1][2], input[1][1], input[1][0]) ).Days,
+                (System.DateTime.Now - new System.DateTime(input[2][2], input[2][1], input[2][0]) ).Days };
 
             for (int i = 0; i < input.Length; i++) {
                 Assert.AreEqual(results[i], DateService.GetDaysSpan(input[i][0], input[i][1], input[i][2]));
