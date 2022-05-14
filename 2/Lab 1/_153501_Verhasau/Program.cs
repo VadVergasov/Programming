@@ -3,4 +3,4 @@ long first, second;
 first = Convert.ToInt64(Console.ReadLine());
 second = Convert.ToInt64(Console.ReadLine());
 long result = first / second;
-Console.WriteLine("Ответ: " + result);
+Console.WriteLine("Ответ: " + result.ToString());
