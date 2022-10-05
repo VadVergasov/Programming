@@ -69,7 +69,12 @@ namespace Lab3.Entities {
         }
 
         public List<(string, int)> GetCustomerListSum(Customer customer) {
-            return (from current in customers where current.Equals(customer) select current.Rates).Single().GroupBy(rate => rate.Name).Select(group => (group.Key, group.Sum(rate => rate.Cost))).ToList();
+            return (from current in customers 
+                    where current.Equals(customer) 
+                    select current.Rates)
+                    .Single()
+                    .GroupBy(rate => rate.Name)
+                    .Select(group => (group.Key, group.Sum(rate => rate.Cost))).ToList();
         }
     }
 
