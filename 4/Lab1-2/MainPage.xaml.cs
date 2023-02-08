@@ -152,7 +152,8 @@ public partial class MainPage : ContentPage {
         if (double.IsInfinity(Math.Pow(10, First))) {
             ExceptionHandler(new OverflowException());
         } else {
-            Display.Text = Math.Pow(10, First).ToString();
+            First = Math.Pow(10, First);
+            Display.Text = First.ToString();
         }
         Calculated = true;
     }
@@ -358,4 +359,3 @@ public partial class MainPage : ContentPage {
         }
     }
 }
-
