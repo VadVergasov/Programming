@@ -4,11 +4,19 @@
        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
        xmlns:local="clr-namespace:Lab1_2">
 
-    <FlyoutItem Title="Main calculator">
+    <FlyoutItem Title="Calculator">
         <Tab>
             <ShellContent Title="Calculator"
                           ContentTemplate="{DataTemplate local:MainPage}"
                           Route="MainPage" />
+        </Tab>
+    </FlyoutItem>
+    
+    <FlyoutItem Title="Progress Bar">
+        <Tab>
+            <ShellContent Title="Progress Bar"
+                          ContentTemplate="{DataTemplate local:ProgressBar}"
+                          Route="ProgressBar" />
         </Tab>
     </FlyoutItem>
 </Shell>
