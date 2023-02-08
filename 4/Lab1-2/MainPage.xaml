@@ -1,0 +1,387 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Lab1_2.MainPage">
+
+    <VerticalStackLayout HorizontalOptions="Center">
+
+        <Label Text=""
+               x:Name="Before"
+               VerticalOptions="Center"
+               HorizontalOptions="End" />
+
+        <Label Text="0"
+               x:Name="Display"
+               VerticalOptions="Center"
+               HorizontalOptions="End"
+               FontSize="Large" />
+
+        <HorizontalStackLayout Spacing="10"
+                               Margin="5"
+                               HorizontalOptions="Center">
+
+            <Button x:Name="MC"
+                    Text="MC"
+                    SemanticProperties.Hint="Clears the memory"
+                    Clicked="OnMemoryClearClicked"
+                    FontSize="Small"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    HeightRequest="60"
+                    WidthRequest="60" />
+
+            <Button x:Name="MR"
+                    Text="MR"
+                    SemanticProperties.Hint="Reuses memory"
+                    Clicked="OnMemoryReuseClicked"
+                    FontSize="Small"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    HeightRequest="60"
+                    WidthRequest="60" />
+
+            <Button x:Name="Mplus"
+                    Text="M+"
+                    SemanticProperties.Hint="Adds to the memory"
+                    Clicked="OnMemoryPlusClicked"
+                    FontSize="Small"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    HeightRequest="60"
+                    WidthRequest="60" />
+
+            <Button x:Name="Mminus"
+                    Text="M-"
+                    SemanticProperties.Hint="Substracts from the memory"
+                    Clicked="OnMemoryMinusClicked"
+                    FontSize="Small"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    Grid.Column="3"
+                    Grid.Row="1"
+                    HeightRequest="60"
+                    WidthRequest="60" />
+
+            <Button x:Name="MS"
+                    Text="MS"
+                    SemanticProperties.Hint="Saves current number to the memory"
+                    Clicked="OnMemorySaveClicked"
+                    FontSize="Small"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    HeightRequest="60"
+                    WidthRequest="60" />
+
+        </HorizontalStackLayout>
+
+        <Grid VerticalOptions="Center"
+              HorizontalOptions="Center">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="90" />
+                <RowDefinition Height="90" />
+                <RowDefinition Height="90" />
+                <RowDefinition Height="90" />
+                <RowDefinition Height="90" />
+                <RowDefinition Height="90" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="90" />
+                <ColumnDefinition Width="90" />
+                <ColumnDefinition Width="90" />
+                <ColumnDefinition Width="90" />
+            </Grid.ColumnDefinitions>
+
+            <Button x:Name="CEButton"
+                    Text="CE"
+                    SemanticProperties.Hint="Clears current number"
+                    Clicked="OnCEClicked"
+                    FontSize="Large"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    Grid.Column="0"
+                    Grid.Row="0"
+                    HeightRequest="80"
+                    WidthRequest="80" />
+
+            <Button x:Name="CButton"
+                    Text="C"
+                    SemanticProperties.Hint="Clears all"
+                    Clicked="OnCClicked"
+                    FontSize="Large"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    Grid.Column="1"
+                    Grid.Row="0"
+                    HeightRequest="80"
+                    WidthRequest="80" />
+
+            <Button x:Name="BackspaceButton"
+                    Text="⌫"
+                    SemanticProperties.Hint="Removes last digit"
+                    Clicked="OnBackspaceClicked"
+                    FontSize="Large"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    Grid.Column="2"
+                    Grid.Row="0"
+                    HeightRequest="80"
+                    WidthRequest="80" />
+
+            <Button x:Name="DivideButton"
+                    Text="÷"
+                    SemanticProperties.Hint="Devides"
+                    Clicked="OnDivisionClicked"
+                    FontSize="Large"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    Grid.Column="3"
+                    Grid.Row="1"
+                    HeightRequest="80"
+                    WidthRequest="80" />
+
+            <Button x:Name="PercentButton"
+                    Text="%"
+                    SemanticProperties.Hint="Devides"
+                    Clicked="OnPercentClicked"
+                    FontSize="Large"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    Grid.Column="0"
+                    Grid.Row="1"
+                    HeightRequest="80"
+                    WidthRequest="80" />
+
+            <Button x:Name="PowerOf10Button"
+                    Text="10ˣ"
+                    SemanticProperties.Hint="Devides"
+                    Clicked="OnPowerOf10Clicked"
+                    FontSize="Large"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    Grid.Column="1"
+                    Grid.Row="1"
+                    HeightRequest="80"
+                    WidthRequest="80" />
+
+            <Button x:Name="ReverseButton"
+                    Text="⅟ₓ"
+                    SemanticProperties.Hint="Devides"
+                    Clicked="OnReverseClicked"
+                    FontSize="Large"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    Grid.Column="2"
+                    Grid.Row="1"
+                    HeightRequest="80"
+                    WidthRequest="80" />
+
+            <Button x:Name="SquareButton"
+                    Text="x²"
+                    SemanticProperties.Hint="Devides"
+                    Clicked="OnSquareClicked"
+                    FontSize="Large"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    Grid.Column="3"
+                    Grid.Row="0"
+                    HeightRequest="80"
+                    WidthRequest="80" />
+
+            <Button x:Name="Number7Button"
+                    Text="7"
+                    SemanticProperties.Hint="Enters 7 digit"
+                    Clicked="OnNumberClicked"
+                    FontSize="Large"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    Grid.Column="0"
+                    Grid.Row="2"
+                    HeightRequest="80"
+                    WidthRequest="80" />
+
+            <Button x:Name="Number8Button"
+                    Text="8"
+                    SemanticProperties.Hint="Enters 8 digit"
+                    Clicked="OnNumberClicked"
+                    FontSize="Large"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    Grid.Column="1"
+                    Grid.Row="2"
+                    HeightRequest="80"
+                    WidthRequest="80" />
+
+            <Button x:Name="Number9Button"
+                    Text="9"
+                    SemanticProperties.Hint="Enters 9 digit"
+                    Clicked="OnNumberClicked"
+                    FontSize="Large"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    Grid.Column="2"
+                    Grid.Row="2"
+                    HeightRequest="80"
+                    WidthRequest="80" />
+
+            <Button x:Name="MultiplyButton"
+                    Text="×"
+                    SemanticProperties.Hint="Multiply"
+                    Clicked="OnMultiplyClicked"
+                    FontSize="Large"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    Grid.Column="3"
+                    Grid.Row="2"
+                    HeightRequest="80"
+                    WidthRequest="80" />
+
+            <Button x:Name="Number4Button"
+                    Text="4"
+                    SemanticProperties.Hint="Enters 4 digit"
+                    Clicked="OnNumberClicked"
+                    FontSize="Large"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    Grid.Row="3"
+                    Grid.Column="0"
+                    HeightRequest="80"
+                    WidthRequest="80" />
+
+            <Button x:Name="Number5Button"
+                    Text="5"
+                    SemanticProperties.Hint="Enters 5 digit"
+                    Clicked="OnNumberClicked"
+                    FontSize="Large"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    Grid.Row="3"
+                    Grid.Column="1"
+                    HeightRequest="80"
+                    WidthRequest="80" />
+
+            <Button x:Name="Number6Button"
+                    Text="6"
+                    SemanticProperties.Hint="Enters 6 digit"
+                    Clicked="OnNumberClicked"
+                    FontSize="Large"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    Grid.Row="3"
+                    Grid.Column="2"
+                    HeightRequest="80"
+                    WidthRequest="80" />
+
+            <Button x:Name="SubstractionButton"
+                    Text="-"
+                    SemanticProperties.Hint="Substract"
+                    Clicked="OnMinusClicked"
+                    FontSize="Large"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    Grid.Row="3"
+                    Grid.Column="3"
+                    HeightRequest="80"
+                    WidthRequest="80" />
+
+            <Button x:Name="Number1Button"
+                    Text="1"
+                    SemanticProperties.Hint="Enters 1 digit"
+                    Clicked="OnNumberClicked"
+                    FontSize="Large"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    Grid.Row="4"
+                    Grid.Column="0"
+                    HeightRequest="80"
+                    WidthRequest="80" />
+
+            <Button x:Name="Number2Button"
+                    Text="2"
+                    SemanticProperties.Hint="Enters 2 digit"
+                    Clicked="OnNumberClicked"
+                    FontSize="Large"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    Grid.Row="4"
+                    Grid.Column="1"
+                    HeightRequest="80"
+                    WidthRequest="80" />
+
+            <Button x:Name="Number3Button"
+                    Text="3"
+                    SemanticProperties.Hint="Enters 3 digit"
+                    Clicked="OnNumberClicked"
+                    FontSize="Large"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    Grid.Row="4"
+                    Grid.Column="2"
+                    HeightRequest="80"
+                    WidthRequest="80" />
+
+            <Button x:Name="SumButton"
+                    Text="+"
+                    SemanticProperties.Hint="Sum"
+                    Clicked="OnPlusClicked"
+                    FontSize="Large"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    Grid.Row="4"
+                    Grid.Column="3"
+                    HeightRequest="80"
+                    WidthRequest="80" />
+
+            <Button x:Name="ChangeSignButton"
+                    Text="+/-"
+                    SemanticProperties.Hint="Change sign"
+                    Clicked="OnChangeSignClicked"
+                    FontSize="Medium"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    Grid.Row="5"
+                    Grid.Column="0"
+                    HeightRequest="80"
+                    WidthRequest="80" />
+
+            <Button x:Name="Number0Button"
+                    Text="0"
+                    SemanticProperties.Hint="Enters 0 digit"
+                    Clicked="OnNumberClicked"
+                    FontSize="Large"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    Grid.Row="6"
+                    Grid.Column="1"
+                    HeightRequest="80"
+                    WidthRequest="80" />
+
+            <Button x:Name="DotSignButton"
+                    Text=","
+                    SemanticProperties.Hint="Enter dot"
+                    Clicked="OnDotClicked"
+                    FontSize="Large"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    Grid.Row="6"
+                    Grid.Column="2"
+                    HeightRequest="80"
+                    WidthRequest="80" />
+
+            <Button x:Name="GetResultButton"
+                    Text="="
+                    SemanticProperties.Hint="Get result"
+                    Clicked="OnResultClicked"
+                    FontSize="Large"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    Grid.Row="6"
+                    Grid.Column="3"
+                    HeightRequest="80"
+                    WidthRequest="80" />
+
+        </Grid>
+
+    </VerticalStackLayout>
+
+</ContentPage>
