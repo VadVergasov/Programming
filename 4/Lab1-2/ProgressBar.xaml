@@ -6,7 +6,11 @@
     <VerticalStackLayout HorizontalOptions="Center"
                          VerticalOptions="Center">
 
-        <Label x:Name="Status" Text="Start calculation" HorizontalOptions="Center" VerticalOptions="Center"/>
+        <Label x:Name="Status"
+               Text="Start calculation"
+               HorizontalOptions="Center"
+               VerticalOptions="Center"
+               FontSize="Large" />
 
         <ProgressBar x:Name="ProgressBarElement"
                      Progress="0.5"
@@ -26,7 +30,6 @@
 
             <Button x:Name="CancelButton"
                     Text="Cancel"
-                    IsEnabled="False"
                     HorizontalOptions="Center"
                     Padding="10"
                     Margin="10"

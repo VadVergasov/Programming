@@ -4,7 +4,7 @@ public class Integral {
     private readonly EventHandler<double> Handler;
     private readonly Microsoft.Maui.Controls.ProgressBar ProgressBarElement;
 
-    public double Calculate(CancellationToken token) {
+    public async Task<double> Calculate(CancellationToken token) {
         double result = 0, step = 0.00000001;
         double percent = -1;
         for (double current = 0; current < 1; current += step) {
@@ -12,12 +12,12 @@ public class Integral {
                 return double.NaN;
             }
             if (percent != Math.Round(current, 2)) {
-                MainThread.BeginInvokeOnMainThread(() => { ProgressBarElement.Progress = percent; });
+                await MainThread.InvokeOnMainThreadAsync(() => { ProgressBarElement.Progress = percent; });
                 percent = Math.Round(current, 2);
             }
             result += step * Math.Sin(current + step / 2.0);
         }
-        MainThread.BeginInvokeOnMainThread(() => { ProgressBarElement.Progress = 1; });
+        await MainThread.InvokeOnMainThreadAsync(() => { ProgressBarElement.Progress = 1; });
         return result;
     }
 
@@ -26,13 +26,14 @@ public class Integral {
         ProgressBarElement = element;
     }
 
-    public void ThreadProc(object obj) {
-        Handler?.Invoke(this, Calculate((CancellationToken)obj));
+    public async Task ThreadProc(CancellationToken token) {
+        Handler?.Invoke(this, await Calculate(token));
     }
 }
 
 public partial class ProgressBar : ContentPage {
     private CancellationTokenSource cts = new();
+    private Task SinCalculate = new(() => { });
 
     public ProgressBar() {
         InitializeComponent();
@@ -45,23 +46,25 @@ public partial class ProgressBar : ContentPage {
             } else {
                 Status.Text = result.ToString();
             }
-            CancelButton.IsEnabled = false;
-            StartButton.IsEnabled = true;
         });
     }
 
     private void Start(object? sender, EventArgs args) {
+        if (SinCalculate.Status == TaskStatus.WaitingForActivation) {
+            return;
+        }
         Integral integral = new(ProgressBarElement, Update);
-        ThreadPool.QueueUserWorkItem(new WaitCallback(integral.ThreadProc!), cts.Token);
+        var token = cts.Token;
+        SinCalculate = Task.Run(() => integral.ThreadProc(token), token);
         Status.Text = "Calculating";
-        CancelButton.IsEnabled = true;
-        StartButton.IsEnabled = false;
     }
 
     private void Cancel(object? sender, EventArgs args) {
+        if (SinCalculate.Status != TaskStatus.WaitingForActivation) {
+            return;
+        }
         cts.Cancel();
+        cts.Dispose();
         cts = new();
-        CancelButton.IsEnabled = false;
-        StartButton.IsEnabled = true;
     }
 }
