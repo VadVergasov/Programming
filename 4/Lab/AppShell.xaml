@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell x:Class="Lab.AppShell"
+       xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       xmlns:local="clr-namespace:Lab">
+
+    <FlyoutItem Title="Calculator">
+        <Tab>
+            <ShellContent Title="Calculator"
+                          ContentTemplate="{DataTemplate local:Lab1.MainPage}"
+                          Route="MainPage" />
+        </Tab>
+    </FlyoutItem>
+
+    <FlyoutItem Title="Progress Bar">
+        <Tab>
+            <ShellContent Title="Progress Bar"
+                          ContentTemplate="{DataTemplate local:Lab2.ProgressBar}"
+                          Route="ProgressBar" />
+        </Tab>
+    </FlyoutItem>
+
+</Shell>
