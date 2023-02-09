@@ -2,7 +2,7 @@ namespace Lab1_2;
 
 public class Integral {
     private readonly EventHandler<double> Handler;
-    private readonly Microsoft.Maui.Controls.ProgressBar ProgressBarElement;
+    private readonly IProgress<double> Progress;
 
     public async Task<double> Calculate(CancellationToken token) {
         double result = 0, step = 0.00000001;
@@ -12,18 +12,18 @@ public class Integral {
                 return double.NaN;
             }
             if (percent != Math.Round(current, 2)) {
-                await MainThread.InvokeOnMainThreadAsync(() => { ProgressBarElement.Progress = percent; });
+                Progress.Report(percent);
                 percent = Math.Round(current, 2);
             }
             result += step * Math.Sin(current + step / 2.0);
         }
-        await MainThread.InvokeOnMainThreadAsync(() => { ProgressBarElement.Progress = 1; });
+        Progress.Report(percent);
         return result;
     }
 
-    public Integral(Microsoft.Maui.Controls.ProgressBar element, EventHandler<double> handler) {
+    public Integral(IProgress<double> progress, EventHandler<double> handler) {
         Handler = handler;
-        ProgressBarElement = element;
+        Progress = progress;
     }
 
     public async Task ThreadProc(CancellationToken token) {
@@ -34,9 +34,11 @@ public class Integral {
 public partial class ProgressBar : ContentPage {
     private CancellationTokenSource cts = new();
     private Task SinCalculate = new(() => { });
+    private readonly Progress<double> Progress ;
 
     public ProgressBar() {
         InitializeComponent();
+        Progress = new(report => { ProgressBarElement.Progress = report; });
     }
 
     private void Update(object? sender, double result) {
@@ -53,7 +55,7 @@ public partial class ProgressBar : ContentPage {
         if (SinCalculate.Status == TaskStatus.WaitingForActivation) {
             return;
         }
-        Integral integral = new(ProgressBarElement, Update);
+        Integral integral = new(Progress, Update);
         var token = cts.Token;
         SinCalculate = Task.Run(() => integral.ThreadProc(token), token);
         Status.Text = "Calculating";
