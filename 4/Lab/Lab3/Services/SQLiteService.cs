@@ -3,7 +3,10 @@ using SQLite;
 
 namespace Lab.Lab3.Services {
     public class SQLiteService : IDbService {
-        private readonly SQLiteConnection Db = new(AppDomain.CurrentDomain.BaseDirectory + "/database.db");
+        private readonly SQLiteConnection Db = new(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"database.db"),
+            SQLiteOpenFlags.ReadWrite |
+            SQLiteOpenFlags.Create |
+            SQLiteOpenFlags.SharedCache);
 
         public IEnumerable<Set> GetAllSets() {
             return Db.Table<Set>().ToList();
