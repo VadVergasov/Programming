@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Lab.Lab3.DBView"
+             x:DataType="local:DBView"
+             xmlns:local="clr-namespace:Lab.Lab3"
+             xmlns:model="clr-namespace:Lab.Lab3.Entities"
+             Title="SQLite Demo">
+    <ScrollView>
+
+        <VerticalStackLayout HorizontalOptions="Center">
+
+            <Picker x:Name="GroupPicker"
+                    Title="Select set"
+                    FontSize="Large"
+                    ItemsSource="{Binding Sets}"
+                    ItemDisplayBinding="{Binding Name}"
+                    SelectedIndexChanged="OnSelectedItem"
+                    VerticalOptions="Start"
+                    HorizontalOptions="Center">
+
+            </Picker>
+
+            <ListView x:Name="SushiList"
+                      ItemsSource="{Binding Sushi}"
+                      VerticalOptions="Center"
+                      HorizontalOptions="Center">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="model:Sushi">
+                        <ViewCell>
+                            <VerticalStackLayout Padding="10"
+                                                 HorizontalOptions="Center">
+                                <Label Text="{Binding Name}"
+                                       FontSize="Medium"
+                                       FontAttributes="Bold" />
+                            </VerticalStackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+        </VerticalStackLayout>
+
+    </ScrollView>
+</ContentPage>

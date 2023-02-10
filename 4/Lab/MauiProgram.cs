@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Lab.Lab3;
+using Lab.Lab3.Services;
+using Microsoft.Extensions.Logging;
 
 namespace Lab;
 
@@ -11,6 +13,9 @@ public static class MauiProgram {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
             });
+
+        builder.Services.AddSingleton<DBView>();
+        builder.Services.AddTransient<IDbService, SQLiteService>();
 
 #if DEBUG
         builder.Logging.AddDebug();

@@ -20,4 +20,12 @@
         </Tab>
     </FlyoutItem>
 
+    <FlyoutItem Title="SQLite Demo">
+        <Tab>
+            <ShellContent Title="SQLite Demo"
+                          ContentTemplate="{DataTemplate local:Lab3.DBView}"
+                          Route="SQLite Demo" />
+        </Tab>
+    </FlyoutItem>
+
 </Shell>
