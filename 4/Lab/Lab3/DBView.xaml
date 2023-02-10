@@ -6,9 +6,11 @@
              xmlns:local="clr-namespace:Lab.Lab3"
              xmlns:model="clr-namespace:Lab.Lab3.Entities"
              Title="SQLite Demo">
-    <ScrollView>
+    <ScrollView VerticalOptions="Fill"
+                HorizontalOptions="Fill">
 
-        <VerticalStackLayout HorizontalOptions="Center">
+        <VerticalStackLayout HorizontalOptions="Fill"
+                             VerticalOptions="Fill">
 
             <Picker x:Name="GroupPicker"
                     Title="Select set"
@@ -23,21 +25,24 @@
 
             <ListView x:Name="SushiList"
                       ItemsSource="{Binding Sushi}"
-                      VerticalOptions="Center"
-                      HorizontalOptions="Center">
+                      VerticalOptions="End"
+                      HorizontalOptions="Center"
+                      SelectionMode="None">
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="model:Sushi">
                         <ViewCell>
-                            <VerticalStackLayout Padding="10"
-                                                 BackgroundColor="White"
-                                                 HorizontalOptions="Fill"
-                                                 Margin="10">
-                                <Label Text="{Binding Name}"
-                                       FontSize="Medium"
-                                       TextColor="Purple"
-                                       HorizontalOptions="Center"
-                                       HorizontalTextAlignment="Center" />
-                            </VerticalStackLayout>
+                            <Label Text="{Binding Name}"
+                                   MaxLines="2"
+                                   LineBreakMode="WordWrap"
+                                   FontSize="Medium"
+                                   TextColor="Purple"
+                                   BackgroundColor="White"
+                                   HorizontalOptions="Center"
+                                   HorizontalTextAlignment="Center"
+                                   VerticalTextAlignment="Center"
+                                   FontAutoScalingEnabled="True"
+                                   VerticalOptions="Center"
+                                   Margin="5" />
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
