@@ -18,7 +18,7 @@ namespace Lab.Lab3.Services {
             Db.DropTable<Sushi>();
             Db.CreateTable<Set>();
             Db.Insert(new Set { Cost = 45.99, Name = "Сяке сет" });
-            Db.Insert(new Set { Cost = 36.99, Name = "Кунсей ет" });
+            Db.Insert(new Set { Cost = 36.99, Name = "Кунсей сет" });
             Db.Insert(new Set { Cost = 43.99, Name = "Бонсай сет" });
             Db.Insert(new Set { Cost = 48.99, Name = "Викэнд сет" });
             Db.Insert(new Set { Cost = 48.99, Name = "Клаб Хаус сет" });

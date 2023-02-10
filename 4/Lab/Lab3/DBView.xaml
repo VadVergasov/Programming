@@ -29,10 +29,14 @@
                     <DataTemplate x:DataType="model:Sushi">
                         <ViewCell>
                             <VerticalStackLayout Padding="10"
-                                                 HorizontalOptions="Center">
+                                                 BackgroundColor="White"
+                                                 HorizontalOptions="Fill"
+                                                 Margin="10">
                                 <Label Text="{Binding Name}"
                                        FontSize="Medium"
-                                       FontAttributes="Bold" />
+                                       TextColor="Purple"
+                                       HorizontalOptions="Center"
+                                       HorizontalTextAlignment="Center" />
                             </VerticalStackLayout>
                         </ViewCell>
                     </DataTemplate>
