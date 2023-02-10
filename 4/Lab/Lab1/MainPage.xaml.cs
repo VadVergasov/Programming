@@ -10,7 +10,7 @@ public class NaNException : Exception {
 
 public partial class MainPage : ContentPage {
 
-    private double Memory { get; set; }
+    private double Memory { get; set; } = double.NaN;
     private double First { get; set; } = double.NaN;
     private double Second { get; set; } = double.NaN;
     private bool IsFractional { get; set; }
@@ -216,6 +216,9 @@ public partial class MainPage : ContentPage {
     }
 
     private void OnMemorySaveClicked(object sender, EventArgs e) {
+        if (double.IsNaN(First)) {
+            return;
+        }
         Memory = First;
     }
 
@@ -224,15 +227,24 @@ public partial class MainPage : ContentPage {
     }
 
     private void OnMemoryReuseClicked(object sender, EventArgs e) {
+        if (double.IsNaN(Memory)) {
+            return;
+        }
         First = Memory;
         Display.Text = First.ToString();
     }
 
     private void OnMemoryPlusClicked(object sender, EventArgs e) {
+        if (double.IsNaN(First)) {
+            return;
+        }
         Memory += First;
     }
 
     private void OnMemoryMinusClicked(object sender, EventArgs e) {
+        if (double.IsNaN(First)) {
+            return;
+        }
         Memory -= First;
     }
 
@@ -265,7 +277,11 @@ public partial class MainPage : ContentPage {
         } else if (Math.Sign(First) == 1) {
             Display.Text = Display.Text!.Insert(0, "-");
         }
-        First *= -1;
+        if (double.IsNaN(Second)) {
+            First *= -1;
+        } else {
+            Second *= -1;
+        }
     }
 
     private void OnPowerOf10Clicked(object sender, EventArgs e) {
