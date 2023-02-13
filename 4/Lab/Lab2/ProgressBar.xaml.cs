@@ -32,7 +32,10 @@ public partial class ProgressBar : ContentPage {
 
     public ProgressBar() {
         InitializeComponent();
-        Progress = new(report => { ProgressBarElement.Progress = report; });
+        Progress = new(report => {
+            ProgressBarElement.Progress = report;
+            ProgressPercent.Text = $"{(int)(report * 100)}%";
+        });
     }
 
     private async void Start(object? sender, EventArgs args) {
@@ -44,7 +47,7 @@ public partial class ProgressBar : ContentPage {
         SinCalculate = Task.Run(() => { return integral.Calculate(token); }, token);
         Status.Text = "Calculating";
         await SinCalculate;
-        if(SinCalculate.Status == TaskStatus.RanToCompletion) {
+        if (SinCalculate.Status == TaskStatus.RanToCompletion) {
             if (double.IsNaN(SinCalculate.Result)) {
                 Status.Text = "Canceled";
             } else {
@@ -54,7 +57,7 @@ public partial class ProgressBar : ContentPage {
     }
 
     private void Cancel(object? sender, EventArgs args) {
-        if (SinCalculate != null &&  SinCalculate.Status == TaskStatus.Running) {
+        if (SinCalculate != null && SinCalculate.Status == TaskStatus.Running) {
             cts.Cancel();
             cts.Dispose();
             cts = new();

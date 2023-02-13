@@ -13,9 +13,21 @@
                VerticalOptions="Center"
                FontSize="Large" />
 
-        <ProgressBar x:Name="ProgressBarElement"
-                     Progress="0.5"
-                     Margin="10,10,10,10" />
+        <HorizontalStackLayout HorizontalOptions="Fill"
+                               VerticalOptions="Center">
+
+            <ProgressBar x:Name="ProgressBarElement"
+                         Progress="0.5"
+                         HorizontalOptions="Fill"
+                         WidthRequest="300"
+                         Margin="10" />
+
+            <Label x:Name="ProgressPercent"
+                   Text="50%"
+                   FontSize="Medium"
+                   HorizontalOptions="End" />
+
+        </HorizontalStackLayout>
 
         <HorizontalStackLayout VerticalOptions="Center"
                                Padding="10"
