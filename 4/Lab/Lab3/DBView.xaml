@@ -5,7 +5,8 @@
              x:DataType="local:DBView"
              xmlns:local="clr-namespace:Lab.Lab3"
              xmlns:model="clr-namespace:Lab.Lab3.Entities"
-             Title="SQLite Demo">
+             Title="SQLite Demo"
+             Loaded="LoadSets">
     <ScrollView VerticalOptions="Fill"
                 HorizontalOptions="Fill">
 
