@@ -10,9 +10,10 @@ public partial class Converter : ContentPage {
     public DateTime Today { get; init; }
     public IList<Currency> CurrenciesList { get; set; }
     public ObservableCollection<Rate> RateList { get; set; } = new();
+    private Rate? CurrentRate { get; set; }
 
     private void ConvertBack(object? sender, TextChangedEventArgs e) {
-        if (CurrencyPicker.SelectedItem is null || e.NewTextValue.Select(symbol => char.IsDigit(symbol) || symbol == ',' ).Count() != e.NewTextValue.Length) {
+        if (CurrencyPicker.SelectedItem is null || e.NewTextValue.Select(symbol => char.IsDigit(symbol) || symbol == ',').Count() != e.NewTextValue.Length) {
             return;
         }
         if (Result.Text.Length == 0) {
@@ -21,9 +22,9 @@ public partial class Converter : ContentPage {
             Value.TextChanged += ConvertValue;
             return;
         }
-        Rate rate = Rates.GetRate(Date.Date, (CurrencyPicker.SelectedItem as Currency)!);
+        CurrentRate ??= Rates.GetRate(Date.Date, (CurrencyPicker.SelectedItem as Currency)!);
         Value.TextChanged -= ConvertValue;
-        Value.Text = $"{Convert.ToDecimal(Result.Text) / rate.Cur_OfficialRate * rate.Cur_Scale:0.##}";
+        Value.Text = $"{Convert.ToDecimal(Result.Text) / CurrentRate.Cur_OfficialRate * CurrentRate.Cur_Scale:0.##}";
         Value.TextChanged += ConvertValue;
     }
 
@@ -37,9 +38,9 @@ public partial class Converter : ContentPage {
             Result.TextChanged += ConvertValue;
             return;
         }
-        Rate rate = Rates.GetRate(Date.Date, (CurrencyPicker.SelectedItem as Currency)!);
+        CurrentRate ??= Rates.GetRate(Date.Date, (CurrencyPicker.SelectedItem as Currency)!);
         Result.TextChanged -= ConvertBack;
-        Result.Text = $"{rate.Cur_OfficialRate * Convert.ToDecimal(Value.Text) / rate.Cur_Scale:0.##}";
+        Result.Text = $"{CurrentRate.Cur_OfficialRate * Convert.ToDecimal(Value.Text) / CurrentRate.Cur_Scale:0.##}";
         Result.TextChanged += ConvertBack;
     }
 
@@ -83,5 +84,6 @@ public partial class Converter : ContentPage {
 
     private void DateSelected(object sender, DateChangedEventArgs e) {
         ConvertValue(sender, new TextChangedEventArgs(Value.Text, Value.Text));
+        CurrentRate = null;
     }
 }
