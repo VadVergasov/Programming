@@ -13,7 +13,7 @@ public partial class Converter : ContentPage {
     private Rate? CurrentRate { get; set; }
 
     private void ConvertBack(object? sender, TextChangedEventArgs e) {
-        if (CurrencyPicker.SelectedItem is null || e.NewTextValue.Select(symbol => char.IsDigit(symbol) || symbol == ',').Count() != e.NewTextValue.Length) {
+        if (CurrencyPicker.SelectedItem is null || e.NewTextValue.Where(symbol => char.IsDigit(symbol) || symbol == ',').Count() != e.NewTextValue.Length) {
             return;
         }
         if (Result.Text.Length == 0) {
@@ -29,13 +29,13 @@ public partial class Converter : ContentPage {
     }
 
     private void ConvertValue(object? sender, TextChangedEventArgs e) {
-        if (CurrencyPicker.SelectedItem is null || e.NewTextValue.Select(symbol => char.IsDigit(symbol) || symbol == ',').Count() != e.NewTextValue.Length) {
+        if (CurrencyPicker.SelectedItem is null || e.NewTextValue.Where(symbol => char.IsDigit(symbol) || symbol == ',').Count() != e.NewTextValue.Length) {
             return;
         }
         if (Value.Text.Length == 0) {
-            Result.TextChanged -= ConvertValue;
+            Result.TextChanged -= ConvertBack;
             Result.Text = "";
-            Result.TextChanged += ConvertValue;
+            Result.TextChanged += ConvertBack;
             return;
         }
         CurrentRate ??= Rates.GetRate(Date.Date, (CurrencyPicker.SelectedItem as Currency)!);
