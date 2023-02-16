@@ -28,4 +28,12 @@
         </Tab>
     </FlyoutItem>
 
+    <FlyoutItem Title="Converter">
+        <Tab>
+            <ShellContent Title="Converter"
+                          ContentTemplate="{DataTemplate local:Lab4.Converter}"
+                          Route="Converter" />
+        </Tab>
+    </FlyoutItem>
+    
 </Shell>

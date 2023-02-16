@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Lab.Lab4"
+             x:Class="Lab.Lab4.Converter"
+             xmlns:model="clr-namespace:Lab.Lab4.Entities"
+             x:DataType="local:Converter"
+             Title="Converter"
+             Loaded="LoadCurrencies">
+    <ContentPage.Resources>
+        <model:CurrencyAbbreviationToFlag x:Key="CurrencyAbbreviationToFlag" />
+    </ContentPage.Resources>
+
+    <ScrollView HorizontalOptions="Fill">
+
+        <VerticalStackLayout HorizontalOptions="Center">
+
+            <DatePicker x:Name="Date"
+                        MaximumDate="{Binding Today}"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center"
+                        DateSelected="DateSelected" />
+
+            <Grid VerticalOptions="Center"
+                  Margin="20"
+                  Padding="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <Picker x:Name="CurrencyPicker"
+                        ItemDisplayBinding="{Binding Cur_Abbreviation, Converter={StaticResource CurrencyAbbreviationToFlag}}"
+                        HorizontalOptions="Fill"
+                        FontSize="Large"
+                        FontFamily="Flags"
+                        VerticalOptions="Center"
+                        Margin="10"
+                        SelectedIndexChanged="ClearInput"
+                        Grid.Column="0" />
+
+                <Entry x:Name="Value"
+                       FontSize="Large"
+                       TextChanged="ConvertValue"
+                       ClearButtonVisibility="WhileEditing"
+                       Margin="10"
+                       MaxLength="10"
+                       HorizontalOptions="Fill"
+                       Keyboard="Numeric"
+                       Grid.Column="1" />
+
+                <Label Text="⇆"
+                       FontSize="Large"
+                       VerticalOptions="Center"
+                       VerticalTextAlignment="Center"
+                       HorizontalOptions="Center"
+                       Grid.Column="2" />
+
+                <Entry x:Name="Result"
+                       TextChanged="ConvertBack"
+                       ClearButtonVisibility="WhileEditing"
+                       FontSize="Large"
+                       Margin="10"
+                       Keyboard="Numeric"
+                       HorizontalOptions="Fill"
+                       Grid.Column="3" />
+
+            </Grid>
+
+            <ActivityIndicator x:Name="Activity"
+                               IsRunning="True" />
+
+            <ListView ItemsSource="{Binding RateList}"
+                      SelectionMode="None"
+                      HorizontalOptions="Center">
+
+                <ListView.Header>
+
+                    <Grid>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <Label Grid.Column="0"
+                               FontSize="Medium"
+                               FontFamily="Flags"
+                               HorizontalTextAlignment="Center"
+                               Text="Валюта" />
+
+                        <Label Grid.Column="1"
+                               FontSize="Medium"
+                               HorizontalTextAlignment="Center"
+                               Text="Количество" />
+
+                        <Label Grid.Column="2"
+                               FontSize="Medium"
+                               HorizontalTextAlignment="Center"
+                               Text="Курс"></Label>
+
+                    </Grid>
+
+                </ListView.Header>
+
+                <ListView.ItemTemplate>
+
+                    <DataTemplate x:DataType="model:Rate">
+
+                        <ViewCell>
+
+                            <Grid>
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+
+                                <Label Grid.Column="0"
+                                       FontSize="Medium"
+                                       FontFamily="Flags"
+                                       HorizontalTextAlignment="Center"
+                                       Text="{Binding Cur_Abbreviation, Converter={StaticResource CurrencyAbbreviationToFlag}}" />
+
+                                <Label Grid.Column="1"
+                                       FontSize="Medium"
+                                       HorizontalTextAlignment="Center"
+                                       Text="{Binding Cur_Scale}" />
+
+                                <Label Grid.Column="2"
+                                       FontSize="Medium"
+                                       HorizontalTextAlignment="Center"
+                                       Text="{Binding Cur_OfficialRate}"></Label>
+
+                            </Grid>
+
+                        </ViewCell>
+
+                    </DataTemplate>
+
+                </ListView.ItemTemplate>
+
+            </ListView>
+
+        </VerticalStackLayout>
+
+    </ScrollView>
+
+</ContentPage>
