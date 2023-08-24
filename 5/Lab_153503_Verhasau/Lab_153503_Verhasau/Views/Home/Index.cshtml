@@ -1,15 +1,20 @@
 ﻿@{
     ViewBag.Title = "Index";
 }
-<h1>Лабораторная работа №1</h1>
+<h1>@ViewData["Lab"]</h1>
 <h2>Список</h2>
 <ol type="A">
-    <li>Элемент 1 списка</li>
-    <li>Элемент 2 списка</li>
+    @for (int i = 0; i < 2; i++) {
+        <li>Элемент списка @(i + 1)</li>
+    }
 </ol>
 <hr />
 <h2>Форма</h2>
 <form method="post">
+    <div class="row mb-3">
+            <select class="form-control" id="dropdown" name="select" asp-items="@(new SelectList(ViewData["ListDemo"] as List<ListDemo>, "Id", "Name"))">
+            </select>
+    </div>
     <div class="row mb-3">
         <div class="col-lg-4 ">
             <div class="form-check">

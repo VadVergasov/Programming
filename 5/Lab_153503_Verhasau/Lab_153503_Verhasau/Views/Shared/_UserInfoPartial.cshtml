@@ -1,0 +1,27 @@
+﻿@using Lab_153503_Verhasau.ViewComponents;
+@await Component.InvokeAsync(typeof(Cart))
+<div class="dropdown ms-4 nav-color">
+    <button class="btn btn-secondary dropdown-toggle"
+            type="button" id="dropdownMenuButton"
+            data-bs-toggle="dropdown"
+            aria-expanded="false">
+        vadim.vergasov2003@gmail.com
+        <i width="30" alt="User" class="fa-solid fa-user"></i>
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <li>
+            <span class="dropdown-item-text">
+                <i width="30" alt="User" class="fa-solid fa-user"></i>
+                vadim.vergasov2003@gmail.com
+            </span>
+        </li>
+        <li><hr class="dropdown-divider"></li>
+        <li>
+            <form id="logoutForm" class="form-inline">
+                <button id="logout" type="submit" class="nav-link btn btn-link text-dark" asp-action="LogOut" asp-controller="Identity">
+                    Logout
+                </button>
+            </form>
+        </li>
+    </ul>
+</div>
