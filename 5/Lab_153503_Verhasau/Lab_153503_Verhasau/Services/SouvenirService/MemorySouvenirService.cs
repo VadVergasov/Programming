@@ -1,6 +1,7 @@
 ﻿using Domain.Entities;
 using Domain.Models;
 using Lab_153503_Verhasau.Services.CategoryService;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Lab_153503_Verhasau.Services.SouvenirService
 {
@@ -8,9 +9,11 @@ namespace Lab_153503_Verhasau.Services.SouvenirService
 	{
 		private readonly ICategoryService _categoryService;
 		private readonly List<Souvenir> _souvenirList;
-		public MemorySouvenirService(ICategoryService categoryService)
+		private readonly int _pageSize;
+		public MemorySouvenirService([FromServices] IConfiguration config, ICategoryService categoryService)
 		{
 			_categoryService = categoryService;
+			_pageSize = Convert.ToInt32(config["ItemsPerPage"]);
 			_souvenirList = new List<Souvenir> {
 				new Souvenir {
 					Id = 1,
@@ -73,17 +76,21 @@ namespace Lab_153503_Verhasau.Services.SouvenirService
 			throw new NotImplementedException();
 		}
 
-		public Task<ResponseData<ListModel<Souvenir>>> GetSouvenirListAsync(string? categoryNormalizedName, int pageNo = 1)
+		public Task<ResponseData<ListModel<Souvenir>>> GetSouvenirListAsync(string? categoryNormalizedName, int pageNo = 0)
 		{
-			ResponseData<ListModel<Souvenir>> result;
+			ResponseData<ListModel<Souvenir>> result = new() { Data = new ListModel<Souvenir>() };
+			List<Souvenir> list;
 			if (categoryNormalizedName == null)
 			{
-				result = new ResponseData<ListModel<Souvenir>> { Data = new ListModel<Souvenir> { Items = _souvenirList } };
+				list = _souvenirList.ToList();
 			}
 			else
 			{
-				result = new ResponseData<ListModel<Souvenir>> { Data = new ListModel<Souvenir> { Items = _souvenirList.Where(x => x.Category.NormalizedName == categoryNormalizedName).ToList() } };
+				list = _souvenirList.Where(x => x.Category.NormalizedName == categoryNormalizedName).ToList();
 			}
+			result.Data.Items = list.Skip(_pageSize * pageNo).Take(_pageSize).ToList();
+			result.Data.TotalPages = Convert.ToInt32(Math.Ceiling(Convert.ToDouble(list.Count) / Convert.ToDouble(_pageSize)));
+			result.Data.CurrentPage = pageNo;
 			return Task.FromResult(result);
 		}
 

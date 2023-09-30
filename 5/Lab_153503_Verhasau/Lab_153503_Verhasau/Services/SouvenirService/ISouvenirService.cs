@@ -5,7 +5,7 @@ namespace Lab_153503_Verhasau.Services.SouvenirService
 {
     public interface ISouvenirService
     {
-        public Task<ResponseData<ListModel<Souvenir>>> GetSouvenirListAsync(string? categoryNormalizedName, int pageNo = 1);
+        public Task<ResponseData<ListModel<Souvenir>>> GetSouvenirListAsync(string? categoryNormalizedName, int pageNo = 0);
 
         public Task<ResponseData<Souvenir>> GetSouvenirByIdAsync(int id);
 

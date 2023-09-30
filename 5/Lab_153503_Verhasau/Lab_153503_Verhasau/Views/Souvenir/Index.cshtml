@@ -1,12 +1,12 @@
-﻿@model (IEnumerable<Domain.Entities.Category> Categories, IEnumerable<Domain.Entities.Souvenir> Souvenirs, Category currentCategory, int TotalPages)
+﻿@model (List<Domain.Entities.Category> Categories, Domain.Models.ListModel<Domain.Entities.Souvenir> Souvenirs, Category currentCategory)
 @{
 	ViewBag.Title = "Каталог";
 	var request = ViewContext.HttpContext.Request;
 	var returnUrl = request.Path + request.QueryString.ToUriComponent();
 	string? category = request.RouteValues["category"]?.ToString();
-	int currentPage = Convert.ToInt32(request.RouteValues["pageNumber"]?.ToString());
+	int currentPage = Model.Souvenirs.CurrentPage;
 	int prev = currentPage == 0 ? 0 : currentPage - 1,
-		next = currentPage == Model.TotalPages - 1 ? Model.TotalPages - 1 : currentPage + 1;
+		next = currentPage == Model.Souvenirs.TotalPages - 1 ? Model.Souvenirs.TotalPages - 1 : currentPage + 1;
 }
 <div class="container row" style="margin: 1rem">
 	<div class="col-2 border-2">
@@ -38,7 +38,7 @@
 			</li>
 		</ul>
 	</div>
-	@foreach (var item in Model.Souvenirs)
+	@foreach (var item in Model.Souvenirs.Items)
 	{
 		<div class="card" style="width: 18rem; margin: 1rem">
 			<div class="card-header">
@@ -57,7 +57,7 @@
 	<nav>
 		<ul class="pagination">
 			<li class="page-item"><a class="page-link" asp-action="Index" asp-route-pageNumber="@prev" asp-route-category="@Model.currentCategory.NormalizedName">Предыдущая</a></li>
-			@foreach (var current_page in Enumerable.Range(0, Model.TotalPages))
+			@foreach (var current_page in Enumerable.Range(0, Model.Souvenirs.TotalPages))
 			{
 				<li class="page-item">
 					<a class="page-link" asp-route-pageNumber="@current_page" asp-route-category="@Model.currentCategory.NormalizedName" asp-action="Index">@(current_page + 1)</a>
