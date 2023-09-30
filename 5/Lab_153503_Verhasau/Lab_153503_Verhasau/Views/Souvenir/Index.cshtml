@@ -1,47 +1,69 @@
-﻿@model IEnumerable<Domain.Entities.Souvenir>
+﻿@model (IEnumerable<Domain.Entities.Category> Categories, IEnumerable<Domain.Entities.Souvenir> Souvenirs, Category currentCategory, int TotalPages)
 @{
 	ViewBag.Title = "Каталог";
+	var request = ViewContext.HttpContext.Request;
+	var returnUrl = request.Path + request.QueryString.ToUriComponent();
+	string? category = request.RouteValues["category"]?.ToString();
+	int currentPage = Convert.ToInt32(request.RouteValues["pageNumber"]?.ToString());
+	int prev = currentPage == 0 ? 0 : currentPage - 1,
+		next = currentPage == Model.TotalPages - 1 ? Model.TotalPages - 1 : currentPage + 1;
 }
-<table class="table">
-	<thead>
-		<tr>
-			<th>
-				@Html.DisplayNameFor(model => model.Name)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.Description)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.Price)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.Image)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.Mime)
-			</th>
-		</tr>
-	</thead>
-	<tbody>
-		@foreach (var item in Model)
-		{
-			<tr>
-				<td>
-					@Html.DisplayFor(modelItem => item.Name)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.Description)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.Price)
-				</td>
-				<td>
-					<img src="@Html.DisplayFor(modelItem => item.Image)" />
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.Mime)
-				</td>
-			</tr>
-		}
-	</tbody>
-</table>
+<div class="container row" style="margin: 1rem">
+	<div class="col-2 border-2">
+		<ul class="nav ">
+			<li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle"
+				   data-bs-toggle="dropdown"
+				   role="button"
+				   aria-expanded="false">
+					@Model.currentCategory.Name
+				</a>
+				<ul class="dropdown-menu">
+					<li>
+						<a class="dropdown-item"
+						   asp-controller="souvenir"
+						   asp-route-category=@null>Все</a>
+					</li>
+					@foreach (var item in Model.Categories)
+					{
+						<li>
+							<a class="dropdown-item"
+							   asp-controller="souvenir"
+							   asp-route-category="@item.NormalizedName">
+								@item.Name
+							</a>
+						</li>
+					}
+				</ul>
+			</li>
+		</ul>
+	</div>
+	@foreach (var item in Model.Souvenirs)
+	{
+		<div class="card" style="width: 18rem; margin: 1rem">
+			<div class="card-header">
+				<h5 class="card-title">@Html.DisplayFor(modelItem => item.Name)</h5>
+			</div>
+			<div class="card-body">
+				<img src="@Html.DisplayFor(modelItem => item.Image)" class="card-img-top" alt="@Html.DisplayFor(modelItem => item.Name)">
+				<p class="card-text">@Html.DisplayFor(modelItem => item.Description)</p>
+				<p class="card-text">Цена: @Html.DisplayFor(modelItem => item.Price)</p>
+			</div>
+			<div class="card-footer text-center">
+				<a asp-controller="Cart" asp-action="Add" asp-route-returnurl="@returnUrl" asp-route-id="@item.Id" class="btn btn-primary">Добавить в корзину</a>
+			</div>
+		</div>
+	}
+	<nav>
+		<ul class="pagination">
+			<li class="page-item"><a class="page-link" asp-action="Index" asp-route-pageNumber="@prev" asp-route-category="@Model.currentCategory.NormalizedName">Предыдущая</a></li>
+			@foreach (var current_page in Enumerable.Range(0, Model.TotalPages))
+			{
+				<li class="page-item">
+					<a class="page-link" asp-route-pageNumber="@current_page" asp-route-category="@Model.currentCategory.NormalizedName" asp-action="Index">@(current_page + 1)</a>
+				</li>
+			}
+			<li class="page-item"><a class="page-link" asp-action="Index" asp-route-pageNumber="@next" asp-route-category="@Model.currentCategory.NormalizedName">Следующая</a></li>
+		</ul>
+	</nav>
+</div>
