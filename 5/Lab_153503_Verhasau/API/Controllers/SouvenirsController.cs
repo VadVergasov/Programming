@@ -1,12 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using API.Data;
 using Domain.Entities;
+using Domain.Models;
+using Lab_153503_Verhasau.Services.SouvenirService;
 
 namespace API.Controllers_
 {
@@ -14,111 +9,96 @@ namespace API.Controllers_
     [ApiController]
     public class SouvenirsController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly ISouvenirService _souvenirService;
 
-        public SouvenirsController(AppDbContext context)
+        public SouvenirsController(ISouvenirService service)
         {
-            _context = context;
+            _souvenirService = service;
         }
 
         // GET: api/Souvenirs
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Souvenir>>> GetSouvenir()
+        [Route("{category?}")]
+        [Route("page{pageNo:int}")]
+        [Route("{category}/page{pageNo}")]
+        public async Task<ActionResult<ResponseData<List<Souvenir>>>> GetSouvenir(string? category, int pageNo = 1, int pageSize = 3)
         {
-          if (_context.Souvenir == null)
-          {
-              return NotFound();
-          }
-            return await _context.Souvenir.ToListAsync();
+            return Ok(await _souvenirService.GetSouvenirListAsync(category, pageNo, pageSize));
         }
 
         // GET: api/Souvenirs/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Souvenir>> GetSouvenir(int id)
+        public async Task<ActionResult<ResponseData<List<Souvenir>>>> GetSouvenir(int id)
         {
-          if (_context.Souvenir == null)
-          {
-              return NotFound();
-          }
-            var souvenir = await _context.Souvenir.FindAsync(id);
-
-            if (souvenir == null)
-            {
-                return NotFound();
-            }
-
-            return souvenir;
+            return Ok(await _souvenirService.GetSouvenirByIdAsync(id));
         }
 
         // PUT: api/Souvenirs/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutSouvenir(int id, Souvenir souvenir)
+        public async Task<ActionResult<ResponseData<List<Souvenir>>>> PutSouvenir(int id, Souvenir souvenir)
         {
-            if (id != souvenir.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(souvenir).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
+                await _souvenirService.UpdateSouvenirAsync(id, souvenir);
+            } catch (Exception e)
             {
-                if (!SouvenirExists(id))
+                return NotFound(new ResponseData<Souvenir>()
                 {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                    Success = false,
+                    ErrorMessage = e.Message
+                });
             }
 
-            return NoContent();
+            return Ok(new ResponseData<Souvenir>()
+            {
+                Data = souvenir,
+            });
         }
 
         // POST: api/Souvenirs
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Souvenir>> PostSouvenir(Souvenir souvenir)
+        public async Task<ActionResult<ResponseData<List<Souvenir>>>> PostSouvenir(Souvenir souvenir)
         {
-          if (_context.Souvenir == null)
-          {
-              return Problem("Entity set 'AppDbContext.Souvenir'  is null.");
-          }
-            _context.Souvenir.Add(souvenir);
-            await _context.SaveChangesAsync();
+            if (souvenir is null)
+            {
+                return BadRequest(new ResponseData<Souvenir>()
+                {
+                    Success = false,
+                    ErrorMessage = "Souvenir is null"
+                });
+            }
+            var response = await _souvenirService.CreateSouvenirAsync(souvenir);
 
-            return CreatedAtAction("GetSouvenir", new { id = souvenir.Id }, souvenir);
+            if (!response.Success)
+            {
+                return BadRequest(response.ErrorMessage);
+            }
+
+            return CreatedAtAction("GetClothes", new { id = souvenir.Id }, new ResponseData<Souvenir>()
+            {
+                Data = souvenir
+            });
         }
 
         // DELETE: api/Souvenirs/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSouvenir(int id)
         {
-            if (_context.Souvenir == null)
+            try
             {
-                return NotFound();
-            }
-            var souvenir = await _context.Souvenir.FindAsync(id);
-            if (souvenir == null)
+                await _souvenirService.DeleteSouvenirAsync(id);
+            } catch (Exception e)
             {
-                return NotFound();
+                return NotFound(new ResponseData<Souvenir>()
+                {
+                    Success = false,
+                    ErrorMessage = e.Message
+                });
             }
-
-            _context.Souvenir.Remove(souvenir);
-            await _context.SaveChangesAsync();
 
             return NoContent();
-        }
-
-        private bool SouvenirExists(int id)
-        {
-            return (_context.Souvenir?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

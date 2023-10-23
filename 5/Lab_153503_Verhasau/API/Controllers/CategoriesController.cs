@@ -1,12 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using API.Data;
 using Domain.Entities;
+using Lab_153503_Verhasau.Services.CategoryService;
+using Domain.Models;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Drawing.Printing;
 
 namespace API.Controllers_
 {
@@ -14,32 +13,29 @@ namespace API.Controllers_
     [ApiController]
     public class CategoriesController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly ICategoryService _categoryService;
 
-        public CategoriesController(AppDbContext context)
+        public CategoriesController(ICategoryService categoryService)
         {
-            _context = context;
+            _categoryService = categoryService;
         }
 
         // GET: api/Categories
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Category>>> GetCategory()
+        public async Task<ActionResult<ResponseData<List<Category>>>> GetCategory()
         {
-          if (_context.Category == null)
-          {
-              return NotFound();
-          }
-            return await _context.Category.ToListAsync();
+            return Ok(await _categoryService.GetCategoryAsync());
         }
 
+        /*
         // GET: api/Categories/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Category>> GetCategory(int id)
         {
-          if (_context.Category == null)
-          {
-              return NotFound();
-          }
+            if (_context.Category == null)
+            {
+                return NotFound();
+            }
             var category = await _context.Category.FindAsync(id);
 
             if (category == null)
@@ -65,14 +61,12 @@ namespace API.Controllers_
             try
             {
                 await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
+            } catch (DbUpdateConcurrencyException)
             {
                 if (!CategoryExists(id))
                 {
                     return NotFound();
-                }
-                else
+                } else
                 {
                     throw;
                 }
@@ -86,10 +80,10 @@ namespace API.Controllers_
         [HttpPost]
         public async Task<ActionResult<Category>> PostCategory(Category category)
         {
-          if (_context.Category == null)
-          {
-              return Problem("Entity set 'AppDbContext.Category'  is null.");
-          }
+            if (_context.Category == null)
+            {
+                return Problem("Entity set 'AppDbContext.Category'  is null.");
+            }
             _context.Category.Add(category);
             await _context.SaveChangesAsync();
 
@@ -120,5 +114,6 @@ namespace API.Controllers_
         {
             return (_context.Category?.Any(e => e.Id == id)).GetValueOrDefault();
         }
+        */
     }
 }

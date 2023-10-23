@@ -1,13 +1,15 @@
+using API.Controllers_;
 using API.Data;
-using Domain.Entities;
+using Lab_153503_Verhasau.Services.CategoryService;
+using Lab_153503_Verhasau.Services.SouvenirService;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddScoped<Souvenir>();
-builder.Services.AddScoped<Category>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<ISouvenirService, SouvenirService>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -19,8 +21,8 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-	app.UseSwagger();
-	app.UseSwaggerUI();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
@@ -35,9 +37,9 @@ app.Run();
 
 static void RegisterDbContext(WebApplicationBuilder builder)
 {
-	var connectionString = builder.Configuration
-		   .GetConnectionString("Default");
-	string dataDirectory = AppDomain.CurrentDomain.BaseDirectory + Path.DirectorySeparatorChar;
-	connectionString = string.Format(connectionString!, dataDirectory);
-	builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite(connectionString).EnableSensitiveDataLogging());
+    var connectionString = builder.Configuration
+           .GetConnectionString("Default");
+    string dataDirectory = AppDomain.CurrentDomain.BaseDirectory + Path.DirectorySeparatorChar;
+    connectionString = string.Format(connectionString!, dataDirectory);
+    builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite(connectionString).EnableSensitiveDataLogging());
 }
