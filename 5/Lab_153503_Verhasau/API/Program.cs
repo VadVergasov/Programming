@@ -30,6 +30,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+await DbInitializer.SeedData(app);
 app.Run();
 
 static void RegisterDbContext(WebApplicationBuilder builder)
