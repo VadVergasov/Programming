@@ -1,5 +1,6 @@
 ﻿using Domain.Entities;
 using Domain.Models;
+using System.Data.SqlTypes;
 using System.Text;
 using System.Text.Json;
 
@@ -10,8 +11,9 @@ namespace Lab_153503_Verhasau.Services.CategoryService
         private readonly HttpClient _httpClient;
         private readonly ILogger<ApiCategoryService> _logger;
         private readonly JsonSerializerOptions _jsonSerializerOptions;
+		private readonly StringBuilder urlString;
 
-        public ApiCategoryService(HttpClient httpClient, IConfiguration configuration, ILogger<ApiCategoryService> logger)
+		public ApiCategoryService(HttpClient httpClient, IConfiguration configuration, ILogger<ApiCategoryService> logger)
         {
             _httpClient = httpClient;
             _logger = logger;
@@ -19,11 +21,11 @@ namespace Lab_153503_Verhasau.Services.CategoryService
             {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase
             };
-        }
+            urlString = new StringBuilder($"{_httpClient.BaseAddress?.AbsoluteUri}categories/");
+		}
 
-        public async Task<ResponseData<List<Category>>> GetClothesCategoryListAsync()
+        public async Task<ResponseData<List<Category>>> GetCategoryAsync()
         {
-            var urlString = new StringBuilder($"{_httpClient.BaseAddress?.AbsoluteUri}clothesCategories/");
             var response = await _httpClient.GetAsync(new Uri(urlString.ToString()));
             if (response.IsSuccessStatusCode)
             {
@@ -47,11 +49,6 @@ namespace Lab_153503_Verhasau.Services.CategoryService
                 Success = false,
                 ErrorMessage = $"No response from server. Error:{response.StatusCode}"
             };
-        }
-
-        Task<ResponseData<List<Category>>> ICategoryService.GetCategoryAsync()
-        {
-            throw new NotImplementedException();
         }
     }
 }

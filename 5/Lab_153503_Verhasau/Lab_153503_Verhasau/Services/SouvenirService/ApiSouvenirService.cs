@@ -23,17 +23,14 @@ namespace Lab_153503_Verhasau.Services.SouvenirService
             _pageSize = configuration.GetValue<int>("ItemsPerPage");
         }
 
-        public async Task<ResponseData<ListModel<Souvenir>>> GetSouvenirListAsync(string? categoryNormalizedName, int pageNo = 1)
+        public async Task<ResponseData<ListModel<Souvenir>>> GetSouvenirListAsync(string? categoryNormalizedName, int pageNo = 0)
         {
             var urlString = new StringBuilder($"{_httpClient.BaseAddress!.AbsoluteUri}souvenirs/");
             if (categoryNormalizedName != null)
             {
                 urlString.Append($"{categoryNormalizedName}/");
             };
-            if (pageNo > 1)
-            {
-                urlString.Append($"page{pageNo}");
-            };
+            urlString.Append($"page{pageNo}");
             if (!_pageSize.Equals("3"))
             {
                 urlString.Append(QueryString.Create("pageSize", _pageSize.ToString()));

@@ -90,7 +90,7 @@ namespace Lab_153503_Verhasau.Services.SouvenirService
                 };
             }
 
-            dataList.Items = await query.Skip((pageNo - 1) * pageSize).Take(pageSize).ToListAsync();
+            dataList.Items = await query.Skip(pageNo * pageSize).Take(pageSize).ToListAsync();
 
             dataList.CurrentPage = pageNo;
             dataList.TotalPages = totalPages;
