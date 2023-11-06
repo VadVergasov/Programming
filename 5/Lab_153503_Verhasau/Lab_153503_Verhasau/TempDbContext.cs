@@ -1,7 +1,7 @@
 ﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace API.Data
+namespace Lab_153503_Verhasau.TempDbContext
 {
     public class AppDbContext : DbContext
     {

@@ -26,15 +26,16 @@ namespace Lab_153503_Verhasau.Services.SouvenirService
         public async Task<ResponseData<ListModel<Souvenir>>> GetSouvenirListAsync(string? categoryNormalizedName, int pageNo = 0)
         {
             var urlString = new StringBuilder($"{_httpClient.BaseAddress!.AbsoluteUri}souvenirs/");
+            List<KeyValuePair<string, string?>> options = new()
+            {
+                new KeyValuePair<string, string?>("pageNo", pageNo.ToString()),
+                new KeyValuePair<string, string?>("pageSize", _pageSize.ToString())
+            };
             if (categoryNormalizedName != null)
             {
-                urlString.Append($"{categoryNormalizedName}/");
-            };
-            urlString.Append($"page{pageNo}");
-            if (!_pageSize.Equals("3"))
-            {
-                urlString.Append(QueryString.Create("pageSize", _pageSize.ToString()));
+                options.Add(new KeyValuePair<string, string?>("category", categoryNormalizedName));
             }
+            urlString.Append(QueryString.Create(options));
 
             var response = await _httpClient.GetAsync(new Uri(urlString.ToString()));
             if (response.IsSuccessStatusCode)
@@ -60,9 +61,81 @@ namespace Lab_153503_Verhasau.Services.SouvenirService
             };
         }
 
-        public Task<ResponseData<Souvenir>> GetSouvenirByIdAsync(int id) => throw new NotImplementedException();
-        public Task UpdateSouvenirAsync(int id, Souvenir souvenir, IFormFile? formFile) => throw new NotImplementedException();
-        public Task DeleteSouvenirAsync(int id) => throw new NotImplementedException();
-        public Task<ResponseData<Souvenir>> CreateSouvenirAsync(Souvenir souvenir, IFormFile? formFile) => throw new NotImplementedException();
+        public async Task<ResponseData<Souvenir>> GetSouvenirByIdAsync(int id)
+        {
+            var urlString = new StringBuilder($"{_httpClient.BaseAddress!.AbsoluteUri}souvenirs/{id}");
+            var response = await _httpClient.GetAsync(new Uri(urlString.ToString()));
+
+            if (response.IsSuccessStatusCode)
+            {
+                try
+                {
+                    return await response.Content.ReadFromJsonAsync<ResponseData<Souvenir>>(_jsonSerializerOptions);
+                } catch (JsonException ex)
+                {
+                    _logger.LogError($"-----> Ошибка: {ex.Message}");
+                    return new ResponseData<Souvenir>
+                    {
+                        Success = false,
+                        ErrorMessage = $"Error: {ex.Message}"
+                    };
+                }
+            }
+            _logger.LogError($"No data from server. Error:{response.StatusCode}");
+            return new ResponseData<Souvenir>()
+            {
+                Success = false,
+                ErrorMessage = $"No data from server. Error:{response.StatusCode}"
+            };
+        }
+
+        public async Task UpdateSouvenirAsync(int id, Souvenir souvenir, IFormFile? formFile)
+        {
+            var urlString = new StringBuilder($"{_httpClient.BaseAddress!.AbsoluteUri}souvenirs/{id}");
+
+            var response = await _httpClient.PutAsync(new Uri(urlString.ToString()),
+                new StringContent(JsonSerializer.Serialize(souvenir), Encoding.UTF8, "application/json"));
+
+            if (response.IsSuccessStatusCode)
+            {
+                if (formFile is not null)
+                {
+                    int clothesId = (await response.Content.ReadFromJsonAsync<ResponseData<Souvenir>>(_jsonSerializerOptions)).Data.Id;
+                }
+            } else
+            {
+                _logger.LogError($"No data from server. Error:{response.StatusCode}");
+            }
+        }
+
+        public async Task DeleteSouvenirAsync(int id)
+        {
+            var uriString = new StringBuilder($"{_httpClient.BaseAddress!.AbsoluteUri}souvenir/{id}");
+
+            var response = await _httpClient.DeleteAsync(new Uri(uriString.ToString()));
+
+            if (!response.IsSuccessStatusCode)
+            {
+                _logger.LogError($"No data from server. Error:{response.StatusCode}");
+            }
+        }
+
+        public async Task<ResponseData<Souvenir>> CreateSouvenirAsync(Souvenir souvenir, IFormFile? formFile)
+        {
+            var uri = new Uri(_httpClient.BaseAddress!.AbsoluteUri + "Clothes");
+            var response = await _httpClient.PostAsJsonAsync(uri, souvenir, _jsonSerializerOptions);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var data = await response.Content.ReadFromJsonAsync<ResponseData<Souvenir>>(_jsonSerializerOptions);
+                return data;
+            }
+            _logger.LogError($"Object wasn't added. Error:{response.StatusCode}");
+            return new ResponseData<Souvenir>
+            {
+                Success = false,
+                ErrorMessage = $"Object wasn't added. Error:{response.StatusCode}"
+            };
+        }
     }
 }

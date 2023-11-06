@@ -1,0 +1,63 @@
+﻿@page
+@using Lab_153503_Verhasau.Areas.Admin.Pages;
+@model Lab_153503_Verhasau.Areas.Admin.Pages.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "_Layout";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.Souvenir[0].Name)
+            </th>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.Souvenir[0].Description)
+            </th>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.Souvenir[0].Price)
+            </th>
+            <th scope="col" class="col-3">
+                @Html.DisplayNameFor(model => model.Souvenir[0].Image)
+            </th>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.Souvenir[0].Mime)
+            </th>
+            <th scope="col" class="col-2"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Souvenir)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    <img src="@item.Image" style="width: 100%; max-height: 200px; min-height: 200px; object-fit: contain;">
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Mime)
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.Id"><i class="bi bi-pencil"></i>Edit</a> |
+                    <a asp-page="./Details" asp-route-id="@item.Id"><i class="bi bi-info-circle"></i>Details</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.Id"><i class="bi bi-trash"></i>Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

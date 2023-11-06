@@ -18,9 +18,6 @@ namespace API.Controllers_
 
         // GET: api/Souvenirs
         [HttpGet]
-        [Route("{category?}")]
-        [Route("page{pageNo:int}")]
-        [Route("{category}/page{pageNo}")]
         public async Task<ActionResult<ResponseData<List<Souvenir>>>> GetSouvenir(string? category, int pageNo = 0, int pageSize = 3)
         {
             return Ok(await _souvenirService.GetSouvenirListAsync(category, pageNo, pageSize));

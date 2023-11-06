@@ -9,10 +9,10 @@ namespace Lab_153503_Verhasau.Services.SouvenirService
 
         public Task<ResponseData<Souvenir>> GetSouvenirByIdAsync(int id);
 
-        public Task UpdateSouvenirAsync(int id, Souvenir souvenir, IFormFile? formFile);
+        public Task UpdateSouvenirAsync(int id, Souvenir souvenir, IFormFile? formFile = null);
 
         public Task DeleteSouvenirAsync(int id);
 
-        public Task<ResponseData<Souvenir>> CreateSouvenirAsync(Souvenir souvenir, IFormFile? formFile);
+        public Task<ResponseData<Souvenir>> CreateSouvenirAsync(Souvenir souvenir, IFormFile? formFile = null);
     }
 }

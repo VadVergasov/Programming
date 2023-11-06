@@ -17,6 +17,7 @@ builder.Services.AddHttpClient<ICategoryService, ApiCategoryService>(client =>
     client.BaseAddress = new Uri(uriData.ApiUri);
 });
 builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
@@ -36,5 +37,6 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapRazorPages();
 
 app.Run();

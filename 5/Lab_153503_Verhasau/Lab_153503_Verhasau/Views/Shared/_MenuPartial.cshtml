@@ -1,9 +1,10 @@
 ﻿﻿@{
     var controller = ViewContext.RouteData.Values["Controller"]?.ToString()?.ToLower() ?? string.Empty;
+    var area = ViewContext.RouteData.Values["Area"]?.ToString()?.ToLower() ?? string.Empty;
 }
-<a class="navbar-brand" href="#">15350021 - Lab</a>
+<a class="navbar-brand" href="">15350021 - Lab</a>
 <div class="navbar-nav">
     <a class="nav-item nav-link active" asp-action="Index" asp-controller="Home">Lab</a>
     <a class="nav-item nav-link" asp-action="Index" asp-controller="Souvenir">Каталог</a>
-    <a class="nav-item nav-link" asp-area="Admin" asp-page="/Index">Администрирование</a>
+    <a class="nav-item nav-link @(area=="admin"?"active":"")" asp-area="Admin" asp-page="/Index">Администрирование</a>
 </div>
