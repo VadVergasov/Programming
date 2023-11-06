@@ -3,7 +3,7 @@ using Domain.Entities;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Lab_153503_Verhasau.Services.CategoryService
+namespace API.Services.CategoryService
 {
     public class CategoryService : ICategoryService
     {

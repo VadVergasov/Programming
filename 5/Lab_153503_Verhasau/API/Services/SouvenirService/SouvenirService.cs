@@ -4,7 +4,7 @@ using Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace Lab_153503_Verhasau.Services.SouvenirService
+namespace API.Services.SouvenirService
 {
     public class SouvenirService : ISouvenirService
     {

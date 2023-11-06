@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Domain.Entities;
 using Domain.Models;
-using Lab_153503_Verhasau.Services.SouvenirService;
+using API.Services.SouvenirService;
 
 namespace API.Controllers_
 {

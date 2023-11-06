@@ -1,11 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using API.Data;
 using Domain.Entities;
-using Lab_153503_Verhasau.Services.CategoryService;
+using API.Services.CategoryService;
 using Domain.Models;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Drawing.Printing;
 
 namespace API.Controllers_
 {

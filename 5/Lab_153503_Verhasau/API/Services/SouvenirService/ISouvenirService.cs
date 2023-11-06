@@ -1,7 +1,7 @@
 ﻿using Domain.Entities;
 using Domain.Models;
 
-namespace Lab_153503_Verhasau.Services.SouvenirService
+namespace API.Services.SouvenirService
 {
     public interface ISouvenirService
     {

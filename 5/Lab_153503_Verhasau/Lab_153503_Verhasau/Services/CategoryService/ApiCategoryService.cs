@@ -1,6 +1,5 @@
 ﻿using Domain.Entities;
 using Domain.Models;
-using System.Data.SqlTypes;
 using System.Text;
 using System.Text.Json;
 

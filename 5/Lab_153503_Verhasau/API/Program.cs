@@ -1,7 +1,6 @@
-using API.Controllers_;
 using API.Data;
-using Lab_153503_Verhasau.Services.CategoryService;
-using Lab_153503_Verhasau.Services.SouvenirService;
+using API.Services.CategoryService;
+using API.Services.SouvenirService;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
