@@ -53,8 +53,6 @@ namespace API.Controllers_
             });
         }
 
-        // POST: api/Souvenirs
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<ResponseData<List<Souvenir>>>> PostSouvenir(Souvenir souvenir)
         {
@@ -73,7 +71,7 @@ namespace API.Controllers_
                 return BadRequest(response.ErrorMessage);
             }
 
-            return CreatedAtAction("GetClothes", new { id = souvenir.Id }, new ResponseData<Souvenir>()
+            return CreatedAtAction("GetSouvenir", new { id = souvenir.Id }, new ResponseData<Souvenir>()
             {
                 Data = souvenir
             });
@@ -96,6 +94,17 @@ namespace API.Controllers_
             }
 
             return NoContent();
+        }
+
+        [HttpPost("{id}")]
+        public async Task<ActionResult<ResponseData<string>>> PostImage(int id, IFormFile formFile)
+        {
+            var response = await _souvenirService.SaveImageAsync(id, formFile);
+            if (response.Success)
+            {
+                return Ok(response);
+            }
+            return NotFound(response);
         }
     }
 }

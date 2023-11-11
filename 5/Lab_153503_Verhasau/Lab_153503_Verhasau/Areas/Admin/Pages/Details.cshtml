@@ -35,7 +35,7 @@
             @Html.DisplayNameFor(model => model.Souvenir.Image)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Souvenir.Image)
+            <img src="@Model.Souvenir.Image" style="width: 100%; max-height: 200px; min-height: 200px; object-fit: contain;">
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Souvenir.Mime)

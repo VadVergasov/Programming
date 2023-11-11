@@ -10,16 +10,21 @@ namespace API.Services.SouvenirService
     {
         private readonly AppDbContext _dbContext;
         private readonly IConfiguration _configuration;
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly int _maxPageSize = 20;
 
-        public SouvenirService([FromServices] IConfiguration config, AppDbContext appDbContext)
+        public SouvenirService([FromServices] IConfiguration config, AppDbContext appDbContext, IWebHostEnvironment webHostEnvironment, IHttpContextAccessor httpContextAccessor)
         {
             _dbContext = appDbContext;
             _configuration = config;
+            _webHostEnvironment = webHostEnvironment;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<ResponseData<Souvenir>> CreateSouvenirAsync(Souvenir souvenir, IFormFile? formFile)
         {
+            _dbContext.Category.Attach(souvenir.Category);
             _dbContext.Souvenir.Add(souvenir);
             try
             {
@@ -111,6 +116,46 @@ namespace API.Services.SouvenirService
             target.Category = souvenir.Category;
             _dbContext.Entry(target).State = EntityState.Modified;
             await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<ResponseData<string>> SaveImageAsync(int id, IFormFile formFile)
+        {
+            var responseData = new ResponseData<string>();
+            var souvenir = await _dbContext.Souvenir.FindAsync(id);
+            if (souvenir == null)
+            {
+                responseData.Success = false;
+                responseData.ErrorMessage = "No item found";
+                return responseData;
+            }
+            var host = "https://" + _httpContextAccessor.HttpContext?.Request.Host;
+            var imageFolder = Path.Combine(_webHostEnvironment.WebRootPath, "Images");
+
+            if (formFile != null)
+            {
+                if (!string.IsNullOrEmpty(souvenir.Image))
+                {
+                    var prevImage = Path.GetFileName(souvenir.Image);
+                    var prevImagePath = Path.Combine(imageFolder, prevImage);
+                    if (File.Exists(prevImagePath))
+                    {
+                        File.Delete(prevImagePath);
+                    }
+                }
+                var ext = Path.GetExtension(formFile.FileName);
+                var fName = Path.ChangeExtension(Path.GetRandomFileName(), ext);
+                var filePath = Path.Combine(imageFolder, fName);
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await formFile.CopyToAsync(stream);
+                }
+
+                souvenir.Image = $"{host}/images/{fName}";
+                _dbContext.Entry(souvenir).State = EntityState.Modified;
+                await _dbContext.SaveChangesAsync();
+            }
+            responseData.Data = souvenir.Image;
+            return responseData;
         }
     }
 }

@@ -100,7 +100,8 @@ namespace Lab_153503_Verhasau.Services.SouvenirService
             {
                 if (formFile is not null)
                 {
-                    int clothesId = (await response.Content.ReadFromJsonAsync<ResponseData<Souvenir>>(_jsonSerializerOptions)).Data.Id;
+                    int clothesId = (await response.Content.ReadFromJsonAsync<ResponseData<Souvenir>>(_jsonSerializerOptions))!.Data.Id;
+                    await SaveImageAsync(clothesId, formFile);
                 }
             } else
             {
@@ -122,12 +123,16 @@ namespace Lab_153503_Verhasau.Services.SouvenirService
 
         public async Task<ResponseData<Souvenir>> CreateSouvenirAsync(Souvenir souvenir, IFormFile? formFile)
         {
-            var uri = new Uri(_httpClient.BaseAddress!.AbsoluteUri + "Clothes");
+            var uri = new Uri(_httpClient.BaseAddress!.AbsoluteUri + "souvenirs");
             var response = await _httpClient.PostAsJsonAsync(uri, souvenir, _jsonSerializerOptions);
 
             if (response.IsSuccessStatusCode)
             {
                 var data = await response.Content.ReadFromJsonAsync<ResponseData<Souvenir>>(_jsonSerializerOptions);
+                if (formFile is not null)
+                {
+                    await SaveImageAsync(data.Data.Id, formFile);
+                }
                 return data;
             }
             _logger.LogError($"Object wasn't added. Error:{response.StatusCode}");
@@ -136,6 +141,20 @@ namespace Lab_153503_Verhasau.Services.SouvenirService
                 Success = false,
                 ErrorMessage = $"Object wasn't added. Error:{response.StatusCode}"
             };
+        }
+
+        private async Task SaveImageAsync(int id, IFormFile image)
+        {
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Post,
+                RequestUri = new Uri($"{_httpClient.BaseAddress?.AbsoluteUri}souvenir/{id}")
+            };
+            var content = new MultipartFormDataContent();
+            var streamContent = new StreamContent(image.OpenReadStream());
+            content.Add(streamContent, "formFile", image.FileName);
+            request.Content = content;
+            await _httpClient.SendAsync(request);
         }
     }
 }

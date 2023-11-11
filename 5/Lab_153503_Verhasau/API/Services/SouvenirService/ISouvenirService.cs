@@ -14,5 +14,7 @@ namespace API.Services.SouvenirService
         public Task DeleteSouvenirAsync(int id);
 
         public Task<ResponseData<Souvenir>> CreateSouvenirAsync(Souvenir souvenir, IFormFile? formFile = null);
+
+        public Task<ResponseData<string>> SaveImageAsync(int id, IFormFile formFile);
     }
 }

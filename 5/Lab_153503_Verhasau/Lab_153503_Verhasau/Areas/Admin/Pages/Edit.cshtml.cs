@@ -17,6 +17,9 @@ namespace Lab_153503_Verhasau.Areas.Admin.Pages
         [BindProperty]
         public Souvenir Souvenir { get; set; } = default!;
 
+        [BindProperty]
+        public IFormFile? Image { get; set; }
+
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
@@ -37,7 +40,7 @@ namespace Lab_153503_Verhasau.Areas.Admin.Pages
         {
             try
             {
-                await _service.UpdateSouvenirAsync(Souvenir.Id, Souvenir);
+                await _service.UpdateSouvenirAsync(Souvenir.Id, Souvenir, Image);
             } catch (Exception)
             {
                 if (!await SouvenirExists(Souvenir.Id))
