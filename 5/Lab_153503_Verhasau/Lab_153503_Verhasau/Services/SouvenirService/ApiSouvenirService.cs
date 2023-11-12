@@ -93,8 +93,11 @@ namespace Lab_153503_Verhasau.Services.SouvenirService
         {
             var urlString = new StringBuilder($"{_httpClient.BaseAddress!.AbsoluteUri}souvenirs/{id}");
 
-            var response = await _httpClient.PutAsync(new Uri(urlString.ToString()),
-                new StringContent(JsonSerializer.Serialize(souvenir), Encoding.UTF8, "application/json"));
+            var jsoned = JsonSerializer.Serialize(souvenir, _jsonSerializerOptions);
+
+            var content = new StringContent(jsoned, Encoding.UTF8, "application/json");
+
+            var response = await _httpClient.PutAsync(new Uri(urlString.ToString()), content);
 
             if (response.IsSuccessStatusCode)
             {
@@ -111,7 +114,7 @@ namespace Lab_153503_Verhasau.Services.SouvenirService
 
         public async Task DeleteSouvenirAsync(int id)
         {
-            var uriString = new StringBuilder($"{_httpClient.BaseAddress!.AbsoluteUri}souvenir/{id}");
+            var uriString = new StringBuilder($"{_httpClient.BaseAddress!.AbsoluteUri}souvenirs/{id}");
 
             var response = await _httpClient.DeleteAsync(new Uri(uriString.ToString()));
 
@@ -148,7 +151,7 @@ namespace Lab_153503_Verhasau.Services.SouvenirService
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Post,
-                RequestUri = new Uri($"{_httpClient.BaseAddress?.AbsoluteUri}souvenir/{id}")
+                RequestUri = new Uri($"{_httpClient.BaseAddress?.AbsoluteUri}souvenirs/{id}")
             };
             var content = new MultipartFormDataContent();
             var streamContent = new StreamContent(image.OpenReadStream());

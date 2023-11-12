@@ -77,14 +77,26 @@ namespace API.Controllers_
             });
         }
 
-        // DELETE: api/Souvenirs/5
-        [HttpDelete("{id}")]
+		[HttpPost("{id}")]
+		public async Task<ActionResult<ResponseData<string>>> PostImage(int id, [FromForm] IFormFile formFile)
+		{
+			var response = await _souvenirService.SaveImageAsync(id, formFile);
+			if (response.Success)
+			{
+				return Ok(response);
+			}
+			return NotFound(response);
+		}
+
+		// DELETE: api/Souvenirs/5
+		[HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSouvenir(int id)
         {
             try
             {
                 await _souvenirService.DeleteSouvenirAsync(id);
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 return NotFound(new ResponseData<Souvenir>()
                 {
@@ -94,17 +106,6 @@ namespace API.Controllers_
             }
 
             return NoContent();
-        }
-
-        [HttpPost("{id}")]
-        public async Task<ActionResult<ResponseData<string>>> PostImage(int id, IFormFile formFile)
-        {
-            var response = await _souvenirService.SaveImageAsync(id, formFile);
-            if (response.Success)
-            {
-                return Ok(response);
-            }
-            return NotFound(response);
         }
     }
 }

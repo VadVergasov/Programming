@@ -74,7 +74,7 @@ namespace API.Services.SouvenirService
             {
                 pageSize = _maxPageSize;
             }
-            var query = _dbContext.Souvenir.AsQueryable();
+            var query = _dbContext.Souvenir.Include(x => x.Category).AsQueryable();
             var dataList = new ListModel<Souvenir>();
             query = query.Where(d => categoryNormalizedName == null || d.Category.NormalizedName.Equals(categoryNormalizedName));
             var count = query.Count();
@@ -112,7 +112,6 @@ namespace API.Services.SouvenirService
             target.Name = souvenir.Name;
             target.Description = souvenir.Description;
             target.Price = souvenir.Price;
-            target.Image = souvenir.Image;
             target.Category = souvenir.Category;
             _dbContext.Entry(target).State = EntityState.Modified;
             await _dbContext.SaveChangesAsync();
