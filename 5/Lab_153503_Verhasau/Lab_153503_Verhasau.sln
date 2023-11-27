@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lab_153503_Verhasau", "Lab_
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{4ED59A53-1FA9-478F-A92C-1E4EDC669FC0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API", "API\API.csproj", "{A3AA79C6-09CF-485C-A4B0-3D5CA82B5129}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API", "API\API.csproj", "{A3AA79C6-09CF-485C-A4B0-3D5CA82B5129}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityServer", "IdentityServer\IdentityServer.csproj", "{58C6D7F8-7841-4A34-8F4B-75B8B57AB1AC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{A3AA79C6-09CF-485C-A4B0-3D5CA82B5129}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A3AA79C6-09CF-485C-A4B0-3D5CA82B5129}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A3AA79C6-09CF-485C-A4B0-3D5CA82B5129}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58C6D7F8-7841-4A34-8F4B-75B8B57AB1AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58C6D7F8-7841-4A34-8F4B-75B8B57AB1AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58C6D7F8-7841-4A34-8F4B-75B8B57AB1AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58C6D7F8-7841-4A34-8F4B-75B8B57AB1AC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
