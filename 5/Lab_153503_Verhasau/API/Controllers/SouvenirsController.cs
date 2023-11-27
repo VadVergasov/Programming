@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Domain.Entities;
 using Domain.Models;
 using API.Services.SouvenirService;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers_
 {
@@ -33,6 +34,7 @@ namespace API.Controllers_
         // PUT: api/Souvenirs/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<ActionResult<ResponseData<List<Souvenir>>>> PutSouvenir(int id, Souvenir souvenir)
         {
             try
@@ -54,6 +56,7 @@ namespace API.Controllers_
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<ResponseData<List<Souvenir>>>> PostSouvenir(Souvenir souvenir)
         {
             if (souvenir is null)
@@ -78,7 +81,8 @@ namespace API.Controllers_
         }
 
 		[HttpPost("{id}")]
-		public async Task<ActionResult<ResponseData<string>>> PostImage(int id, [FromForm] IFormFile formFile)
+        [Authorize]
+        public async Task<ActionResult<ResponseData<string>>> PostImage(int id, [FromForm] IFormFile formFile)
 		{
 			var response = await _souvenirService.SaveImageAsync(id, formFile);
 			if (response.Success)
@@ -90,6 +94,7 @@ namespace API.Controllers_
 
 		// DELETE: api/Souvenirs/5
 		[HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteSouvenir(int id)
         {
             try

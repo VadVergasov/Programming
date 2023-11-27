@@ -17,6 +17,18 @@ namespace IdentityServer
                 var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
                 context.Database.Migrate();
 
+                var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+                List<string> roles = new()
+                {
+                    "user",
+                    "admin",
+                };
+
+                foreach (var role in roles)
+                {
+                    roleManager.CreateAsync(new IdentityRole(role));
+                }
+
                 var userMgr = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
                 var alice = userMgr.FindByNameAsync("alice").Result;
                 if (alice == null)
@@ -44,8 +56,7 @@ namespace IdentityServer
                         throw new Exception(result.Errors.First().Description);
                     }
                     Log.Debug("alice created");
-                }
-                else
+                } else
                 {
                     Log.Debug("alice already exists");
                 }
@@ -77,10 +88,74 @@ namespace IdentityServer
                         throw new Exception(result.Errors.First().Description);
                     }
                     Log.Debug("bob created");
-                }
-                else
+                } else
                 {
                     Log.Debug("bob already exists");
+                }
+
+                var user = userMgr.FindByEmailAsync("user@gmail.com").Result;
+                if (user == null)
+                {
+                    user = new ApplicationUser
+                    {
+                        UserName = "fakeuser",
+                        Email = "user@gmail.com",
+                        EmailConfirmed = true
+                    };
+
+                    var result = userMgr.CreateAsync(user, "Pass123$").Result;
+                    if (!result.Succeeded)
+                    {
+                        throw new Exception(result.Errors.First().Description);
+                    }
+
+                    result = userMgr.AddClaimsAsync(alice, new Claim[]{
+                            new Claim(JwtClaimTypes.Name, "user"),
+                            new Claim(JwtClaimTypes.GivenName, "user"),
+                            new Claim(JwtClaimTypes.FamilyName, "user"),
+                        }).Result;
+                    if (!result.Succeeded)
+                    {
+                        throw new Exception(result.Errors.First().Description);
+                    }
+                    Log.Debug("user created");
+                    userMgr.AddToRoleAsync(user, "user");
+                } else
+                {
+                    Log.Debug("user already exists");
+                }
+
+
+                var admin = userMgr.FindByEmailAsync("admin@gmail.com").Result;
+                if (admin == null)
+                {
+                    admin = new ApplicationUser
+                    {
+                        UserName = "fakeadmin",
+                        Email = "admin@gmail.com",
+                        EmailConfirmed = true
+                    };
+
+                    var result = userMgr.CreateAsync(admin, "Pass123$").Result;
+                    if (!result.Succeeded)
+                    {
+                        throw new Exception(result.Errors.First().Description);
+                    }
+
+                    result = userMgr.AddClaimsAsync(alice, new Claim[]{
+                            new Claim(JwtClaimTypes.Name, "admin"),
+                            new Claim(JwtClaimTypes.GivenName, "admin"),
+                            new Claim(JwtClaimTypes.FamilyName, "admin"),
+                        }).Result;
+                    if (!result.Succeeded)
+                    {
+                        throw new Exception(result.Errors.First().Description);
+                    }
+                    Log.Debug("admin created");
+                    userMgr.AddToRoleAsync(admin, "admin");
+                } else
+                {
+                    Log.Debug("admin already exists");
                 }
             }
         }

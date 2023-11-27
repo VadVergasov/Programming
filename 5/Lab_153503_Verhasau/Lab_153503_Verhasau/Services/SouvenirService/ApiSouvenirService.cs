@@ -1,5 +1,7 @@
 ﻿using Domain.Entities;
 using Domain.Models;
+using Microsoft.AspNetCore.Authentication;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 
@@ -8,14 +10,16 @@ namespace Lab_153503_Verhasau.Services.SouvenirService
     public class ApiSouvenirService : ISouvenirService
     {
         private readonly HttpClient _httpClient;
+        private readonly HttpContext _httpContext;
         private readonly ILogger<ApiSouvenirService> _logger;
         private readonly JsonSerializerOptions _jsonSerializerOptions;
         private readonly int _pageSize;
 
-        public ApiSouvenirService(HttpClient httpClient, IConfiguration configuration, ILogger<ApiSouvenirService> logger)
+        public ApiSouvenirService(HttpClient httpClient, IConfiguration configuration, ILogger<ApiSouvenirService> logger, IHttpContextAccessor httpContextAccessor)
         {
             _httpClient = httpClient;
             _logger = logger;
+            _httpContext = httpContextAccessor.HttpContext!;
             _jsonSerializerOptions = new JsonSerializerOptions()
             {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase
@@ -26,6 +30,8 @@ namespace Lab_153503_Verhasau.Services.SouvenirService
         public async Task<ResponseData<ListModel<Souvenir>>> GetSouvenirListAsync(string? categoryNormalizedName, int pageNo = 0)
         {
             var urlString = new StringBuilder($"{_httpClient.BaseAddress!.AbsoluteUri}souvenirs/");
+            var token = await _httpContext.GetTokenAsync("access_token");
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
             List<KeyValuePair<string, string?>> options = new()
             {
                 new KeyValuePair<string, string?>("pageNo", pageNo.ToString()),
@@ -64,6 +70,8 @@ namespace Lab_153503_Verhasau.Services.SouvenirService
         public async Task<ResponseData<Souvenir>> GetSouvenirByIdAsync(int id)
         {
             var urlString = new StringBuilder($"{_httpClient.BaseAddress!.AbsoluteUri}souvenirs/{id}");
+            var token = await _httpContext.GetTokenAsync("access_token");
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
             var response = await _httpClient.GetAsync(new Uri(urlString.ToString()));
 
             if (response.IsSuccessStatusCode)
@@ -92,6 +100,8 @@ namespace Lab_153503_Verhasau.Services.SouvenirService
         public async Task UpdateSouvenirAsync(int id, Souvenir souvenir, IFormFile? formFile)
         {
             var urlString = new StringBuilder($"{_httpClient.BaseAddress!.AbsoluteUri}souvenirs/{id}");
+            var token = await _httpContext.GetTokenAsync("access_token");
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
 
             var jsoned = JsonSerializer.Serialize(souvenir, _jsonSerializerOptions);
 
@@ -115,6 +125,8 @@ namespace Lab_153503_Verhasau.Services.SouvenirService
         public async Task DeleteSouvenirAsync(int id)
         {
             var uriString = new StringBuilder($"{_httpClient.BaseAddress!.AbsoluteUri}souvenirs/{id}");
+            var token = await _httpContext.GetTokenAsync("access_token");
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
 
             var response = await _httpClient.DeleteAsync(new Uri(uriString.ToString()));
 
@@ -127,6 +139,8 @@ namespace Lab_153503_Verhasau.Services.SouvenirService
         public async Task<ResponseData<Souvenir>> CreateSouvenirAsync(Souvenir souvenir, IFormFile? formFile)
         {
             var uri = new Uri(_httpClient.BaseAddress!.AbsoluteUri + "souvenirs");
+            var token = await _httpContext.GetTokenAsync("access_token");
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
             var response = await _httpClient.PostAsJsonAsync(uri, souvenir, _jsonSerializerOptions);
 
             if (response.IsSuccessStatusCode)
@@ -157,6 +171,8 @@ namespace Lab_153503_Verhasau.Services.SouvenirService
             var streamContent = new StreamContent(image.OpenReadStream());
             content.Add(streamContent, "formFile", image.FileName);
             request.Content = content;
+            var token = await _httpContext.GetTokenAsync("access_token");
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
             await _httpClient.SendAsync(request);
         }
     }

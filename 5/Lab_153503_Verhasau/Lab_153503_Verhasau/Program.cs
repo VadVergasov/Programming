@@ -19,6 +19,28 @@ builder.Services.AddHttpClient<ICategoryService, ApiCategoryService>(client =>
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
+builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddAuthentication(opt =>
+{
+    opt.DefaultScheme = "cookie";
+    opt.DefaultChallengeScheme = "oidc";
+})
+.AddCookie("cookie")
+.AddOpenIdConnect("oidc", options =>
+{
+    options.Authority =
+    builder.Configuration["InteractiveServiceSettings:AuthorityUrl"];
+    options.ClientId =
+    builder.Configuration["InteractiveServiceSettings:ClientId"];
+    options.ClientSecret =
+    builder.Configuration["InteractiveServiceSettings:ClientSecret"];
+    options.GetClaimsFromUserInfoEndpoint = true;
+    options.ResponseType = "code";
+    options.ResponseMode = "query";
+    options.SaveTokens = true;
+});
+
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
@@ -31,12 +53,12 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-app.MapRazorPages();
+app.MapRazorPages().RequireAuthorization();
 
 app.Run();
