@@ -52,6 +52,17 @@ namespace IdentityServer.Pages.Register
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            public IFormFile? Image { get; set; }
+        }
+
+        private async Task SaveImageAsync(string id)
+        {
+            var ext = Path.GetExtension(Input.Image.FileName);
+            var fileName = Path.ChangeExtension(id, ext);
+            var path = Path.Combine(_webHostEnvironment.ContentRootPath, "images", fileName);
+            using var stream = System.IO.File.OpenWrite(path);
+            await Input.Image.CopyToAsync(stream);
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -71,6 +82,15 @@ namespace IdentityServer.Pages.Register
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+
+                    if (Input.Image != null)
+                    {
+                        await SaveImageAsync(user.Id);
+                    }
+                    else
+                    {
+                        _logger.LogInformation("User has not selected an avatar. Image is null.");
+                    }
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {

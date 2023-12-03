@@ -5,6 +5,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 	</PropertyGroup>
 
+	<PropertyGroup Condition=" '$(RunConfiguration)' == 'SelfHost' " />
 	<ItemGroup>
 		<PackageReference Include="Duende.IdentityServer.AspNetIdentity" Version="6.3.2" />
 
@@ -23,5 +24,13 @@
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
+	</ItemGroup>
+	<ItemGroup>
+	  <None Remove="Images\" />
+	  <None Remove="Controllers\" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Images\" />
+	  <Folder Include="Controllers\" />
 	</ItemGroup>
 </Project>

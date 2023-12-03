@@ -42,6 +42,8 @@ namespace IdentityServer
                 .AddInMemoryClients(Config.Clients)
                 .AddAspNetIdentity<ApplicationUser>();
 
+            builder.Services.AddControllers();
+
             builder.Services.AddAuthentication()
                 .AddGoogle(options =>
                 {
