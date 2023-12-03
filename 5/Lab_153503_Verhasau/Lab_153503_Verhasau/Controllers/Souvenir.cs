@@ -2,6 +2,7 @@
 using Lab_153503_Verhasau.Services.CategoryService;
 using Lab_153503_Verhasau.Services.SouvenirService;
 using Microsoft.AspNetCore.Mvc;
+using WEB_153505_Vlasenko.Extensions;
 
 namespace Lab_153503_Verhasau.Controllers
 {
@@ -23,7 +24,24 @@ namespace Lab_153503_Verhasau.Controllers
 			{
 				return NotFound(response.ErrorMessage);
 			}
-			return View(
+
+			var allCategories = await _categoryService.GetCategoryAsync();
+
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView("_SouvenirCardsAndPagerPartial", new
+                {
+                    response.Data!.CurrentPage,
+                    response.Data!.TotalPages,
+					ReturnUrl="",
+					Category=category,
+					CurrentCategory=category,
+                    Souvenirs = response.Data!.Items,
+                    InAdminArea = false	
+                });
+            }
+
+            return View(
 				(
 					categories.Data,
 					response.Data,

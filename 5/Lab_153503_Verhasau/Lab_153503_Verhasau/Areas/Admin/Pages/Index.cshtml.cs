@@ -8,6 +8,9 @@ namespace Lab_153503_Verhasau.Areas.Admin.Pages
     {
         private readonly ISouvenirService _service;
 
+        public int CurrentPage { get; set; }
+        public int TotalPages { get; set; }
+
         public IndexModel(ISouvenirService service)
         {
             _service = service;
@@ -15,13 +18,15 @@ namespace Lab_153503_Verhasau.Areas.Admin.Pages
 
         public IList<Souvenir> Souvenir { get;set; } = default!;
 
-        public async Task OnGetAsync()
+        public async Task OnGetAsync(int pageNo = 0)
         {
-            var response = await _service.GetSouvenirListAsync(null);
+            var response = await _service.GetSouvenirListAsync(null, pageNo);
 
             if (response.Success)
             {
                 Souvenir = response.Data.Items;
+                CurrentPage = response.Data.CurrentPage;
+                TotalPages = response.Data.TotalPages;
             }
         }
     }

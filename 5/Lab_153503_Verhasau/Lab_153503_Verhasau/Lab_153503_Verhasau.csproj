@@ -30,4 +30,12 @@
     <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="TagHelpers\" />
+    <None Remove="Extensions\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="TagHelpers\" />
+    <Folder Include="Extensions\" />
+  </ItemGroup>
 </Project>

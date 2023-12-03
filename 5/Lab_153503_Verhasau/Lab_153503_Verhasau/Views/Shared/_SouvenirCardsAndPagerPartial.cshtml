@@ -1,0 +1,43 @@
+﻿<div id="products-and-pager">
+    <div class="row offset-2">
+        @foreach (var item in Model.Souvenirs)
+        {
+            <div class="card" style="width: 18rem; margin: 1rem">
+                <div class="card-header">
+                    <h5 class="card-title">@item.Name</h5>
+                </div>
+                <div class="card-body">
+                    <img src="@item.Image" class="card-img-top" alt="@item.Name">
+                    <p class="card-text">@item.Description</p>
+                    <p class="card-text">Цена: @item.Price</p>
+                    @if (!Model.InAdminArea)
+                    {
+                        <div class="card-footer text-center">
+                            <a asp-controller="Cart" asp-action="Add" asp-route-id="@item.Id" asp-route-returnUrl=@Model.ReturnUrl class="btn btn-primary">Добавить в корзину</a>
+                        </div>
+                    }
+                    else
+                    {
+                        <a asp-page="./Edit" asp-route-id="@item.Id"><i class="bi bi-pencil"></i>Edit</a>
+                        <a asp-page="./Details" asp-route-id="@item.Id"><i class="bi bi-info-circle"></i>Details</a>
+                        <a asp-page="./Delete" asp-route-id="@item.Id"><i class="bi bi-trash"></i>Delete</a>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+    @if (Model.InAdminArea)
+    {
+        <pager current-page="@Model.CurrentPage"
+               total-pages="@Model.TotalPages"
+               admin="true"></pager>
+    }
+    else
+    {
+        <pager current-page="@Model.CurrentPage"
+               total-pages="@Model.TotalPages"
+               category="@Model.Category"
+               current-category="@Model.CurrentCategory"></pager>
+    }
+</div>
+<script src="~/js/site.js"></script>
