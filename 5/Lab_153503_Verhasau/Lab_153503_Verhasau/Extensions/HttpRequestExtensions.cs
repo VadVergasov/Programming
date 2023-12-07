@@ -1,4 +1,4 @@
-﻿namespace WEB_153505_Vlasenko.Extensions;
+﻿namespace Lab_153503_Verhasau.Extensions;
 
 public static class HttpRequestExtensions
 {

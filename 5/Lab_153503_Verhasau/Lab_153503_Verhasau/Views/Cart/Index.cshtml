@@ -1,0 +1,44 @@
+﻿@using Domain.Models
+@model Cart
+@{
+    var request = ViewContext.HttpContext.Request;
+    var ReturnUrl = request.Path + request.QueryString.ToUriComponent();
+}
+
+<h2>Cart Items</h2>
+
+@if (Model.CartItems.Count > 0)
+{
+    <table style="width: 100%" class="table">
+        <thead>
+            <tr>
+                <th>Товар</th>
+                <th>Количество</th>
+                <th>Цена</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var cartItem in Model.CartItems)
+            {
+                <tr>
+                    <td>@cartItem.Value.Souvenir.Name</td>
+                    <td>@cartItem.Value.Quantity</td>
+                    <td>@(cartItem.Value.Souvenir.Price * cartItem.Value.Quantity)</td>
+                    <td>
+                        <form asp-action="Remove" asp-controller="Cart" asp-route-id=@cartItem.Value.Souvenir.Id asp-route-returnUrl=@ReturnUrl method="post">
+                            <button type="submit" class="btn btn-danger">Удалить</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <br />
+    <p>Всего товаров: @Model.Quantity</p>
+    <p>Итоговая цена: @Model.TotalPrice</p>
+}
+else
+{
+    <p>Корзина пуста.</p>
+}

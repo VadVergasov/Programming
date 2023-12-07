@@ -2,7 +2,7 @@
 using Lab_153503_Verhasau.Services.CategoryService;
 using Lab_153503_Verhasau.Services.SouvenirService;
 using Microsoft.AspNetCore.Mvc;
-using WEB_153505_Vlasenko.Extensions;
+using Lab_153503_Verhasau.Extensions;
 
 namespace Lab_153503_Verhasau.Controllers
 {
@@ -16,7 +16,10 @@ namespace Lab_153503_Verhasau.Controllers
 			_categoryService = categoryService;
 			_souvenirService = souvenirService;
 		}
-		public async Task<IActionResult> Index(string? category, int pageNumber = 0)
+
+        [Route("Souvenir")]
+        [Route("Souvenir/{category?}")]
+        public async Task<IActionResult> Index(string? category, int pageNumber = 0)
 		{
 			var categories = await _categoryService.GetCategoryAsync();
 			var response = await _souvenirService.GetSouvenirListAsync(category, pageNumber);

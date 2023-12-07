@@ -1,6 +1,7 @@
 using Lab_153503_Verhasau.Models;
 using Lab_153503_Verhasau.Services.CategoryService;
 using Lab_153503_Verhasau.Services.SouvenirService;
+using WEB_153505_Vlasenko.Services.CartService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +19,10 @@ builder.Services.AddHttpClient<ICategoryService, ApiCategoryService>(client =>
 });
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession();
+builder.Services.AddScoped(sp => SessionCart.GetCart(sp));
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 builder.Services.AddHttpContextAccessor();
 
@@ -53,6 +58,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseSession();
 app.UseAuthentication();
 app.UseAuthorization();
 

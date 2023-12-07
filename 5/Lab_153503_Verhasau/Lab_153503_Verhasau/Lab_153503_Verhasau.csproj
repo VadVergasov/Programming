@@ -33,9 +33,13 @@
   <ItemGroup>
     <None Remove="TagHelpers\" />
     <None Remove="Extensions\" />
+    <None Remove="Services\CartService\" />
+    <None Remove="Views\Cart\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="TagHelpers\" />
     <Folder Include="Extensions\" />
+    <Folder Include="Services\CartService\" />
+    <Folder Include="Views\Cart\" />
   </ItemGroup>
 </Project>

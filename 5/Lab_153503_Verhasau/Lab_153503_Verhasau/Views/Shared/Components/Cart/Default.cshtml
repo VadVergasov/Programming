@@ -1,3 +1,5 @@
-﻿﻿<a class="navbar-text ms-auto" asp-controller="Cart" asp-action="Index">
-	00,0 руб <i class="fa-solid fa-cart-shopping"></i> (0)
+﻿@using Domain.Models;
+@model Cart
+<a class="navbar-text ms-auto" asp-controller="Cart" asp-action="Index">
+    @Model.TotalPrice руб <i class="fa-solid fa-cart-shopping"></i> (@Model.Quantity)
 </a>
