@@ -1,13 +1,15 @@
-﻿@model (List<Domain.Entities.Category> Categories, Domain.Models.ListModel<Domain.Entities.Souvenir> Souvenirs, Category currentCategory)
+﻿@model List<Domain.Entities.Souvenir>
 @{
     ViewBag.Title = "Каталог";
     var request = ViewContext.HttpContext.Request;
     var returnUrl = request.Path + request.QueryString.ToUriComponent();
     string? category = request.RouteValues["category"]?.ToString();
-    int currentPage = Model.Souvenirs.CurrentPage;
-    int totalPages = Model.Souvenirs.TotalPages;
+    string currentCategory = ViewData["currentCategory"] as string ?? "Все";
+    var CategoryList = ViewData["allCategories"] as List<Category> ?? new List<Category>();
+    int currentPage = ViewData["currentPage"] as int? ?? 1;
+    int totalPages = ViewData["totalPages"] as int? ?? 1;
     int prev = currentPage == 0 ? 0 : currentPage - 1,
-        next = currentPage == Model.Souvenirs.TotalPages - 1 ? Model.Souvenirs.TotalPages - 1 : currentPage + 1;
+        next = currentPage == totalPages - 1 ? totalPages - 1 : currentPage + 1;
 }
 <div class="container row" style="margin: 1rem">
     <div class="col-2 border-2">
@@ -17,7 +19,7 @@
                    data-bs-toggle="dropdown"
                    role="button"
                    aria-expanded="false">
-                    @Model.currentCategory.Name
+                    @currentCategory
                 </a>
                 <ul class="dropdown-menu">
                     <li>
@@ -25,7 +27,7 @@
                            asp-controller="souvenir"
                            asp-route-category=@null>Все</a>
                     </li>
-                    @foreach (var item in Model.Categories)
+                    @foreach (var item in CategoryList)
                     {
                         <li>
                             <a class="dropdown-item"
@@ -44,10 +46,9 @@
         {
             CurrentPage = currentPage,
             TotalPages = totalPages,
-            Souvenirs = Model.Souvenirs.Items,
+            Souvenirs = Model,
             ReturnUrl = returnUrl,
             InAdminArea = false,
-            CurrentCategory = Model.currentCategory.NormalizedName,
             Category = category,
         });
     }

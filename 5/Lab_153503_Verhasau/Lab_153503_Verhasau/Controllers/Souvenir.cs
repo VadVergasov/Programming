@@ -21,7 +21,6 @@ namespace Lab_153503_Verhasau.Controllers
         [Route("Souvenir/{category?}")]
         public async Task<IActionResult> Index(string? category, int pageNumber = 0)
 		{
-			var categories = await _categoryService.GetCategoryAsync();
 			var response = await _souvenirService.GetSouvenirListAsync(category, pageNumber);
 			if (!response.Success)
 			{
@@ -29,6 +28,16 @@ namespace Lab_153503_Verhasau.Controllers
 			}
 
 			var allCategories = await _categoryService.GetCategoryAsync();
+            if (!allCategories.Success)
+            {
+                return NotFound(allCategories.ErrorMessage);
+            }
+
+            ViewData["allCategories"] = allCategories.Data;
+            var currentCategory = category == null ? "Все" : allCategories.Data!.FirstOrDefault(c => c.NormalizedName == category)?.Name;
+            ViewData["currentCategory"] = currentCategory;
+            ViewData["currentPage"] = response.Data!.CurrentPage;
+            ViewData["totalPages"] = response.Data.TotalPages;
 
             if (Request.IsAjaxRequest())
             {
@@ -38,19 +47,12 @@ namespace Lab_153503_Verhasau.Controllers
                     response.Data!.TotalPages,
 					ReturnUrl="",
 					Category=category,
-					CurrentCategory=category,
                     Souvenirs = response.Data!.Items,
                     InAdminArea = false	
                 });
             }
 
-            return View(
-				(
-					categories.Data,
-					response.Data,
-					categories.Data.FirstOrDefault(x => x.NormalizedName == category) ?? new Category { Name = "Все" }
-				)
-			);
-		}
+            return View(response.Data!.Items);
+        }
 	}
 }

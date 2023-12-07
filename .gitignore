@@ -9,6 +9,8 @@
 
 mono_crash.*
 
+.DS_Store
+
 [Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/
