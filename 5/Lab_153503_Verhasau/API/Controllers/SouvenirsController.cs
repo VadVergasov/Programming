@@ -4,7 +4,7 @@ using Domain.Models;
 using API.Services.SouvenirService;
 using Microsoft.AspNetCore.Authorization;
 
-namespace API.Controllers_
+namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

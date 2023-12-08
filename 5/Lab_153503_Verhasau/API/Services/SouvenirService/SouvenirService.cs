@@ -9,15 +9,13 @@ namespace API.Services.SouvenirService
     public class SouvenirService : ISouvenirService
     {
         private readonly AppDbContext _dbContext;
-        private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly int _maxPageSize = 20;
 
-        public SouvenirService([FromServices] IConfiguration config, AppDbContext appDbContext, IWebHostEnvironment webHostEnvironment, IHttpContextAccessor httpContextAccessor)
+        public SouvenirService(AppDbContext appDbContext, IWebHostEnvironment webHostEnvironment, IHttpContextAccessor httpContextAccessor)
         {
             _dbContext = appDbContext;
-            _configuration = config;
             _webHostEnvironment = webHostEnvironment;
             _httpContextAccessor = httpContextAccessor;
         }

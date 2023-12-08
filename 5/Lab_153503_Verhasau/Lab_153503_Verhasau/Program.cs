@@ -1,7 +1,7 @@
 using Lab_153503_Verhasau.Models;
 using Lab_153503_Verhasau.Services.CategoryService;
 using Lab_153503_Verhasau.Services.SouvenirService;
-using WEB_153505_Vlasenko.Services.CartService;
+using Lab_153503_Verhasau.Services.CartService;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -1,5 +1,4 @@
-﻿using Domain.Entities;
-using Lab_153503_Verhasau.Services.CategoryService;
+﻿using Lab_153503_Verhasau.Services.CategoryService;
 using Lab_153503_Verhasau.Services.SouvenirService;
 using Microsoft.AspNetCore.Mvc;
 using Lab_153503_Verhasau.Extensions;
@@ -45,7 +44,7 @@ namespace Lab_153503_Verhasau.Controllers
                 {
                     response.Data!.CurrentPage,
                     response.Data!.TotalPages,
-					ReturnUrl="",
+					ReturnUrl=Request.Path + Request.QueryString.ToUriComponent(),
 					Category=category,
                     Souvenirs = response.Data!.Items,
                     InAdminArea = false	

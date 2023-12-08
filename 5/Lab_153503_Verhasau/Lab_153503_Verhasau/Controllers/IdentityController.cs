@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 
-namespace WEB_153505_Vlasenko.Controllers;
+namespace Lab_153503_Verhasau.Controllers;
 public class IdentityController : Controller
 {
     private readonly ILogger<IdentityController> _logger;

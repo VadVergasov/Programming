@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Lab_153503_Verhasau.Services.SouvenirService;
 
-namespace WEB_153505_Vlasenko.Controllers;
+namespace Lab_153503_Verhasau.Controllers;
 public class Cart : Controller
 {
     private readonly ISouvenirService _souvenirService;

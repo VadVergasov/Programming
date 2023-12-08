@@ -3,7 +3,7 @@ using Lab_153503_Verhasau.Extensions;
 using System.Text.Json.Serialization;
 using Domain.Entities;
 
-namespace WEB_153505_Vlasenko.Services.CartService;
+namespace Lab_153503_Verhasau.Services.CartService;
 
 public class SessionCart : Cart
 {

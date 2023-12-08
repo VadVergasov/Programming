@@ -3,7 +3,7 @@ using Domain.Entities;
 using API.Services.CategoryService;
 using Domain.Models;
 
-namespace API.Controllers_
+namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
