@@ -2,6 +2,8 @@ using Lab_153503_Verhasau.Models;
 using Lab_153503_Verhasau.Services.CategoryService;
 using Lab_153503_Verhasau.Services.SouvenirService;
 using Lab_153503_Verhasau.Services.CartService;
+using Serilog;
+using Lab_153503_Verhasau.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,6 +48,10 @@ builder.Services.AddAuthentication(opt =>
     options.SaveTokens = true;
 });
 
+var logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .CreateLogger();
+
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
@@ -61,6 +67,8 @@ app.UseRouting();
 app.UseSession();
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseMiddleware<LoggingMiddleware>(logger);
 
 app.MapControllerRoute(
     name: "default",
